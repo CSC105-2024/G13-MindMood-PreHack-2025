@@ -1,46 +1,98 @@
-import { useState } from 'react';
-import { Link } from "react-router-dom";
+import React, { useState } from 'react';
 import Navbar from '../components/UI/Navbar';
 
-const MoodTracker = () => {
+const Home = () => {
   const [week, setWeek] = useState(1);
   const [day, setDay] = useState(1);
-  const [activities, setActivities] = useState([
-
-  ]);
+  const [activities, setActivities] = useState({});
   const [newActivity, setNewActivity] = useState('');
   const [isAddingActivity, setIsAddingActivity] = useState(false);
   const [showMoodSelector, setShowMoodSelector] = useState(false);
   const [selectedActivityId, setSelectedActivityId] = useState(null);
+  const [isEditing, setIsEditing] = useState(null);
+  const [editText, setEditText] = useState('');
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [activityToDelete, setActivityToDelete] = useState(null);
+
+  const key = `week-${week}-day-${day}`;
+
+  const clampDayWeek = (nextDay, nextWeek) => {
+    let newDay = nextDay;
+    let newWeek = nextWeek;
+
+    if (newDay > 7) {
+      newDay = 1;
+      newWeek = newWeek < 4 ? newWeek + 1 : 1;
+    } else if (newDay < 1) {
+      newDay = 7;
+      newWeek = newWeek > 1 ? newWeek - 1 : 4;
+    }
+
+    return [newDay, newWeek];
+  };
+
+  const handleNextDay = () => {
+    const [newDay, newWeek] = clampDayWeek(day + 1, week);
+    setDay(newDay);
+    setWeek(newWeek);
+  };
+
+  const handlePrevDay = () => {
+    const [newDay, newWeek] = clampDayWeek(day - 1, week);
+    setDay(newDay);
+    setWeek(newWeek);
+  };
+
+  const handleNextWeek = () => {
+    const newWeek = week < 4 ? week + 1 : 1;
+    setWeek(newWeek);
+  };
+
+  const handlePrevWeek = () => {
+    const newWeek = week > 1 ? week - 1 : 4;
+    setWeek(newWeek);
+  };
 
   const handleAddActivity = () => {
-    if (newActivity.trim() !== '') {
-      const newId = activities.length > 0 ? Math.max(...activities.map(a => a.id)) + 1 : 1;
-      setActivities([...activities, { 
-        id: newId, 
-        name: newActivity, 
-        mood: 'Neutral', 
-        completed: false 
-      }]);
+    if (newActivity.trim()) {
+      const current = activities[key] || [];
+      const newId = current.length > 0 ? Math.max(...current.map(a => a.id)) + 1 : 1;
+      const updated = [...current, { id: newId, name: newActivity, mood: 'Neutral', completed: false }];
+      setActivities({ ...activities, [key]: updated });
       setNewActivity('');
       setIsAddingActivity(false);
     }
   };
 
-  const handleDeleteActivity = (id) => {
-    setActivities(activities.filter(activity => activity.id !== id));
+  const confirmDeleteActivity = (id) => {
+    setShowDeleteModal(true);
+    setActivityToDelete(id);
+  };
+
+  const handleDeleteActivity = () => {
+    const updated = (activities[key] || []).filter(activity => activity.id !== activityToDelete);
+    setActivities({ ...activities, [key]: updated });
+    setShowDeleteModal(false);
+    setActivityToDelete(null);
+  };
+
+  const handleCancelDelete = () => {
+    setShowDeleteModal(false);
+    setActivityToDelete(null);
   };
 
   const handleToggleCompletion = (id) => {
-    setActivities(activities.map(activity => 
+    const updated = (activities[key] || []).map(activity =>
       activity.id === id ? { ...activity, completed: !activity.completed } : activity
-    ));
+    );
+    setActivities({ ...activities, [key]: updated });
   };
 
   const handleSetMood = (id, mood) => {
-    setActivities(activities.map(activity => 
+    const updated = (activities[key] || []).map(activity =>
       activity.id === id ? { ...activity, mood } : activity
-    ));
+    );
+    setActivities({ ...activities, [key]: updated });
     setShowMoodSelector(false);
   };
 
@@ -49,32 +101,51 @@ const MoodTracker = () => {
     setShowMoodSelector(true);
   };
 
+  const handleEdit = (activity) => {
+    setIsEditing(activity.id);
+    setEditText(activity.name);
+  };
+
+  const handleSaveEdit = (id) => {
+    const updated = (activities[key] || []).map(activity =>
+      activity.id === id ? { ...activity, name: editText } : activity
+    );
+    setActivities({ ...activities, [key]: updated });
+    setIsEditing(null);
+    setEditText('');
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(null);
+    setEditText('');
+  };
+
+  const handleSubmit = () => {
+    handleNextDay();
+  };
+
   return (
     <div className="min-h-screen bg-amber-50">
-        <Navbar />
       <main className="max-w-4xl mx-auto p-6">
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center space-x-2">
             <span className="text-lg font-medium">Week {week}</span>
-            <button className="p-1 rounded-full">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clipRule="evenodd" />
-              </svg>
-            </button>
+            <button className="p-1 rounded-full hover:bg-gray-300" onClick={handlePrevWeek}>⇦</button>
+            <button className="p-1 rounded-full hover:bg-gray-300" onClick={handleNextWeek}>⇨</button>
           </div>
 
           <div className="flex items-center space-x-2">
             <span className="text-lg font-medium">Day {day}</span>
-            <button className="p-1 rounded-full">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clipRule="evenodd" />
-              </svg>
-            </button>
+            <button className="p-1 rounded-full hover:bg-gray-300" onClick={handlePrevDay}>⇦</button>
+            <button className="p-1 rounded-full hover:bg-gray-300" onClick={handleNextDay}>⇨</button>
           </div>
 
-          <button className="px-4 py-2 bg-amber-400 rounded-md text-gray-700">Submit</button>
+          <button className="px-4 py-2 rounded-md text-white bg-[#e38b29] hover:brightness-110" onClick={handleSubmit}>
+            Submit
+          </button>
         </div>
 
+        {/* Add activity form */}
         <div className="bg-white rounded-md p-4 shadow-sm mb-6">
           {isAddingActivity ? (
             <div className="flex items-center justify-between">
@@ -84,92 +155,71 @@ const MoodTracker = () => {
                 className="flex-1 p-2 border-none focus:outline-none"
                 value={newActivity}
                 onChange={(e) => setNewActivity(e.target.value)}
+                autoFocus
               />
               <div className="flex space-x-2">
-                <button 
-                  className="px-4 py-2 bg-gray-200 rounded-md text-gray-700"
-                  onClick={() => setIsAddingActivity(false)}
-                >
-                  Cancel
-                </button>
-                <button 
-                  className="px-4 py-2 bg-amber-400 rounded-md text-gray-700"
-                  onClick={handleAddActivity}
-                >
-                  Add
-                </button>
+                <button className="px-4 py-2 bg-gray-200 rounded-md text-gray-700 hover:bg-gray-300" onClick={() => setIsAddingActivity(false)}>Cancel</button>
+                <button className="px-4 py-2 bg-amber-400 rounded-md text-gray-700 hover:bg-amber-500" onClick={handleAddActivity}>Add</button>
               </div>
             </div>
           ) : (
-            <button 
-              className="w-full text-left p-2 text-gray-600"
-              onClick={() => setIsAddingActivity(true)}
-            >
-              Add activity
-            </button>
+            <button className="w-full text-left p-2 text-gray-600 hover:bg-gray-100" onClick={() => setIsAddingActivity(true)}>Add activity</button>
           )}
         </div>
 
+        {/* Activity list */}
         <div className="bg-white rounded-md p-4 shadow-sm">
-          {activities.map(activity => (
+          {(activities[key] || []).map(activity => (
             <div key={activity.id} className="mb-4 flex items-center">
               <div className="w-1 h-12 bg-amber-500 mr-4"></div>
               <div className="mr-2">{activity.id}</div>
-              <div className="flex-1">{activity.name}</div>
-              
+              <div className="flex-1">
+                {isEditing === activity.id ? (
+                  <input
+                    type="text"
+                    className="w-full p-1 border rounded focus:outline-none"
+                    value={editText}
+                    onChange={(e) => setEditText(e.target.value)}
+                  />
+                ) : (
+                  <span>{activity.name}</span>
+                )}
+              </div>
+
               <div className="relative">
-                <button 
+                <button
                   onClick={() => showMoodOptions(activity.id)}
-                  className={`px-4 py-2 rounded-md mr-4 text-white ${
-                    activity.mood === 'Calm' ? 'bg-green-400' : 
-                    activity.mood === 'Neutral' ? 'bg-amber-400' : 
+                  className={`px-4 py-2 rounded-md mr-4 text-white hover:brightness-110 ${
+                    activity.mood === 'Calm' ? 'bg-green-400' :
+                    activity.mood === 'Neutral' ? 'bg-amber-400' :
                     'bg-red-400'
                   }`}
                 >
                   {activity.mood}
                 </button>
-                
+
                 {showMoodSelector && selectedActivityId === activity.id && (
-                  <div className="absolute z-10 mt-1 w-full">
-                    <button 
-                      className="w-full py-2 bg-green-400 text-white block"
-                      onClick={() => handleSetMood(activity.id, 'Calm')}
-                    >
-                      Calm
-                    </button>
-                    <button 
-                      className="w-full py-2 bg-amber-400 text-white block"
-                      onClick={() => handleSetMood(activity.id, 'Neutral')}
-                    >
-                      Neutral
-                    </button>
-                    <button 
-                      className="w-full py-2 bg-red-400 text-white block"
-                      onClick={() => handleSetMood(activity.id, 'Stressed')}
-                    >
-                      Stressed
-                    </button>
+                  <div className="absolute z-10 mt-1 w-full shadow-md rounded-md bg-white">
+                    <button className="w-full py-2 text-left px-4 hover:bg-green-500 bg-green-400 text-white block" onClick={() => handleSetMood(activity.id, 'Calm')}>Calm</button>
+                    <button className="w-full py-2 text-left px-4 hover:bg-amber-500 bg-amber-400 text-white block" onClick={() => handleSetMood(activity.id, 'Neutral')}>Neutral</button>
+                    <button className="w-full py-2 text-left px-4 hover:bg-red-500 bg-red-400 text-white block" onClick={() => handleSetMood(activity.id, 'Stressed')}>Stressed</button>
                   </div>
                 )}
               </div>
-              
-              <button className="p-2 bg-gray-200 rounded-md mr-2">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L16.732 3.732z" />
-                </svg>
-              </button>
-              
-              <button 
-                className="p-2 bg-red-200 rounded-md mr-2"
-                onClick={() => handleDeleteActivity(activity.id)}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                </svg>
-              </button>
-              
-              <button 
-                className={`px-4 py-2 rounded-md ${activity.completed ? 'bg-green-400 text-white' : 'bg-red-400 text-white'}`}
+
+              {isEditing === activity.id ? (
+                <>
+                  <button className="p-2 bg-green-200 rounded-md mr-2 hover:bg-green-300" onClick={() => handleSaveEdit(activity.id)}>✔</button>
+                  <button className="p-2 bg-gray-200 rounded-md mr-2 hover:bg-gray-300" onClick={handleCancelEdit}>✖</button>
+                </>
+              ) : (
+                <button className="p-2 bg-gray-200 rounded-md mr-2 hover:bg-gray-300" onClick={() => handleEdit(activity)}>✎</button>
+              )}
+
+              <button className="p-2 bg-red-200 rounded-md mr-2 hover:bg-red-300" onClick={() => confirmDeleteActivity(activity.id)}>🗑</button>
+
+              <button
+                className={`px-4 py-2 rounded-md hover:brightness-110 ${activity.completed ? 'bg-green-400 text-white' : 'bg-red-400 text-white'}`}
                 onClick={() => handleToggleCompletion(activity.id)}
               >
                 {activity.completed ? 'Done' : 'Not Done'}
@@ -177,9 +227,23 @@ const MoodTracker = () => {
             </div>
           ))}
         </div>
+
+        {/* Delete confirmation modal */}
+        {showDeleteModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded-md shadow-md w-96">
+              <h2 className="text-lg font-semibold mb-4">Delete Activity?</h2>
+              <p className="mb-6">Are you sure you want to delete your activity?</p>
+              <div className="flex justify-end space-x-4">
+                <button className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300" onClick={handleCancelDelete}>Cancel</button>
+                <button className="px-4 py-2 bg-amber-500 text-white rounded-md hover:bg-amber-600" onClick={handleDeleteActivity}>Delete</button>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );
 };
 
-export default MoodTracker;
+export default Home;
