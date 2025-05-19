@@ -86,6 +86,9 @@ Prisma.NullTypes = {
  * Enums
  */
 exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
+  ReadUncommitted: 'ReadUncommitted',
+  ReadCommitted: 'ReadCommitted',
+  RepeatableRead: 'RepeatableRead',
   Serializable: 'Serializable'
 });
 
@@ -99,6 +102,12 @@ exports.Prisma.UserScalarFieldEnum = {
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.UserOrderByRelevanceFieldEnum = {
+  username: 'username',
+  email: 'email',
+  password: 'password'
 };
 
 
@@ -116,7 +125,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/settawutsirithongkaset/Documents/G13-MindMood/Backend/src/generated/prisma",
+      "value": "/Users/settawutsirithongkaset/Documents/G13-MindMood-PreHack-2025/Backend/src/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -130,7 +139,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/Users/settawutsirithongkaset/Documents/G13-MindMood/Backend/prisma/schema.prisma",
+    "sourceFilePath": "/Users/settawutsirithongkaset/Documents/G13-MindMood-PreHack-2025/Backend/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -143,7 +152,7 @@ const config = {
   "datasourceNames": [
     "db"
   ],
-  "activeProvider": "sqlite",
+  "activeProvider": "mysql",
   "inlineDatasources": {
     "db": {
       "url": {
@@ -152,8 +161,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id       Int    @id @default(autoincrement())\n  username String @unique\n  email    String @unique\n  password String\n}\n",
-  "inlineSchemaHash": "67679dd66b4883abb03e455e067755c3b03f0cf2bf56927ceda1edeb07e4a9d3",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider          = \"mysql\"\n  url               = env(\"DATABASE_URL\")\n  shadowDatabaseUrl = env(\"SHADOW_DATABASE_URL\")\n}\n\nmodel User {\n  id       Int    @id @default(autoincrement())\n  username String @unique\n  email    String @unique\n  password String\n}\n",
+  "inlineSchemaHash": "60aace45858a6d82c46064b7f79431f783fef6a1c7524a03cf1eab43304e8094",
   "copyEngine": true
 }
 config.dirname = '/'

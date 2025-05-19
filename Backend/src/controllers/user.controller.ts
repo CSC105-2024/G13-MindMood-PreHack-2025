@@ -37,7 +37,7 @@ export const signup = async (c: Context) => {
  
 export const login = async (c: Context) => {
   try {
-    const { email, password } = await c.req.json();
+    const { email, password, rememberMe } = await c.req.json();
     const user = await prisma.user.findUnique({ where: { email } });
 
     if (!user) return c.json({ status: false, message: 'User not found' }, 404);
@@ -45,14 +45,19 @@ export const login = async (c: Context) => {
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) return c.json({ status: false, message: 'Invalid password' }, 401);
 
+    // Set token expiration based on rememberMe flag
+    const expiresIn = rememberMe ? '30d' : '1d';
+    
     const token = jwt.sign({
       username: user.username,
       id: user.id
-    }, JWT_SECRET, {
-      expiresIn: '1d'
-    });
+    }, JWT_SECRET, { expiresIn });
    
-    c.header('Set-Cookie', `token=${token}; HttpOnly; Path=/; SameSite=Strict; Max-Age=2592000`);
+    // Set cookie expiry based on rememberMe flag
+    // Short session (1 day): 86400 seconds
+    // Long session (30 days): 2592000 seconds
+    const maxAge = rememberMe ? 2592000 : 86400;
+    c.header('Set-Cookie', `token=${token}; HttpOnly; Path=/; SameSite=Strict; Max-Age=${maxAge}`);
 
     return c.json({
       status: true,
@@ -134,7 +139,7 @@ export const getProfile = async (c: Context) => {
       select: {
         id: true,
         username: true,
-        email: true,
+        email: true
       }
     });
    

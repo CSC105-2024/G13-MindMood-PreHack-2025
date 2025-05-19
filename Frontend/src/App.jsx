@@ -1,16 +1,13 @@
 import { useState } from 'react'
-import Navbar from '../src/components/UI/Navbar'
 import { Outlet } from "react-router-dom";
+import { AuthProvider } from './context/AuthContext';
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
       <AuthProvider>
-        <div>
-          <Navbar />
+        <div className="min-h-screen bg-amber-50">
           <Outlet />
         </div>
       </AuthProvider>

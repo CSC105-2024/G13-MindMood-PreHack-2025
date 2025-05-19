@@ -1,74 +1,129 @@
-import React, { useState } from 'react';
-import { NavLink } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import { useAuth } from '../context/AuthContext';
+import Navbar from '../components/UI/Navbar';
 
-function Login() {
+const Login = () => {
+  const navigate = useNavigate();
+  const { login, isAuthenticated } = useAuth();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-
-    // Example validation
-    if (!email || !password) {
-      setError('Please fill in all fields.');
-      return;
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/home');
     }
+  }, [isAuthenticated, navigate]);
 
-    // Simulated login logic
-    console.log('Logging in with:', { email, password });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setError('');
-    // Redirect or further logic here...
+    setLoading(true);
+
+    try {
+      const result = await login(email, password);
+
+      if (result.success) {
+        navigate('/home');
+      } else {
+        setError(result.message || 'Login failed');
+      }
+    } catch (err) {
+      console.error(err);
+      setError('An unexpected error occurred. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-amber-50 p-4">
-      <div className="bg-amber-100 p-10 rounded-2xl shadow-lg w-full max-w-md">
-        <h2 className="text-3xl font-bold mb-6 text-center">Login</h2>
+    <>
+      <div className="flex justify-center items-center min-h-screen bg-amber-50">
+        <div className="bg-white p-8 rounded-md shadow-sm w-full max-w-sm border border-gray-200">
+          <h2 className="text-2xl font-bold mb-6 text-center text-gray-700">Login</h2>
 
-        {error && (
-          <div className="mb-4 text-red-600 bg-red-100 p-2 rounded text-sm text-center">
-            {error}
-          </div>
-        )}
+          {error && <div className="text-red-500 text-center mb-4">{error}</div>}
 
-        <form onSubmit={handleLogin} className="flex flex-col gap-4">
-          <div>
-            <label className="block font-medium mb-1">Email</label>
-            <input
-              type="email"
-              className="w-full p-3 rounded-xl border border-amber-300 bg-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-500"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-            />
-          </div>
+          <form className="space-y-4" onSubmit={handleSubmit}>
+            <div>
+              <label htmlFor="email" className="block font-semibold text-gray-700">Email</label>
+              <input
+                type="email"
+                id="email"
+                autoComplete="off"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full border border-amber-300 p-2 rounded bg-amber-50 text-gray-800"
+                required
+              />
+            </div>
 
-          <div>
-            <label className="block font-medium mb-1">Password</label>
-            <input
-              type="password"
-              className="w-full p-3 rounded-xl border border-amber-300 bg-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-500"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-            />
-          </div>
-          <NavLink to="/ResetPassword" className="underline cursor-pointer text-sm">Forgot Password?</NavLink>
-          <button
-            type="submit"
-            className="bg-black hover:bg-gray-500 text-white text-lg font-semibold py-3 rounded-xl transition"
-          >
-            Login
-          </button>
-        </form>
+            <div>
+              <label htmlFor="password" className="block font-semibold text-gray-700">Password</label>
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  id="password"
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full border border-amber-300 p-2 pr-10 rounded bg-amber-50 text-gray-800"
+                  required
+                />
+                <span
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute top-1/2 right-3 transform -translate-y-1/2 text-xl text-gray-600 cursor-pointer"
+                >
+                  {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+                </span>
+              </div>
+            </div>
 
-        <p className="mt-6 text-sm text-center">
-          Don’t have an account? <NavLink to="/Singup" className="underline cursor-pointer">Sign up</NavLink>
-        </p>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="rememberMe"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="h-4 w-4 text-amber-500 border-amber-300 rounded focus:ring-amber-500"
+                />
+                <label htmlFor="rememberMe" className="ml-2 block text-sm text-gray-700">
+                  Remember me
+                </label>
+              </div>
+
+              <Link to="/forgotpassword" className="text-sm font-medium text-gray-600 hover:text-gray-800 underline">
+                Forgot Password?
+              </Link>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className={`w-full bg-amber-400 text-gray-800 py-2 rounded hover:bg-amber-500 transition-colors ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+            >
+              {loading ? 'Logging in...' : 'Login'}
+            </button>
+          </form>
+
+          <p className="text-center text-sm mt-4 text-gray-600">
+            Don't have an account?{' '}
+            <Link to="/signup" className="font-semibold text-amber-500 hover:underline">
+              Sign Up
+            </Link>
+          </p>
+        </div>
       </div>
-    </div>
+    </>
   );
-}
+};
 
 export default Login;
