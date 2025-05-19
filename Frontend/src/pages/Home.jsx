@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Link } from "react-router-dom";
 import Navbar from '../components/UI/Navbar';
 
 const Home = () => {
@@ -12,6 +11,8 @@ const Home = () => {
   const [selectedActivityId, setSelectedActivityId] = useState(null);
   const [isEditing, setIsEditing] = useState(null);
   const [editText, setEditText] = useState('');
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [activityToDelete, setActivityToDelete] = useState(null);
 
   const key = `week-${week}-day-${day}`;
 
@@ -63,9 +64,21 @@ const Home = () => {
     }
   };
 
-  const handleDeleteActivity = (id) => {
-    const updated = (activities[key] || []).filter(activity => activity.id !== id);
+  const confirmDeleteActivity = (id) => {
+    setShowDeleteModal(true);
+    setActivityToDelete(id);
+  };
+
+  const handleDeleteActivity = () => {
+    const updated = (activities[key] || []).filter(activity => activity.id !== activityToDelete);
     setActivities({ ...activities, [key]: updated });
+    setShowDeleteModal(false);
+    setActivityToDelete(null);
+  };
+
+  const handleCancelDelete = () => {
+    setShowDeleteModal(false);
+    setActivityToDelete(null);
   };
 
   const handleToggleCompletion = (id) => {
@@ -108,7 +121,7 @@ const Home = () => {
   };
 
   const handleSubmit = () => {
-    handleNextDay(); // Moves to the next day and adjusts week if necessary
+    handleNextDay();
   };
 
   return (
@@ -127,10 +140,7 @@ const Home = () => {
             <button className="p-1 rounded-full hover:bg-gray-300" onClick={handleNextDay}>⇨</button>
           </div>
 
-          <button
-            className="px-4 py-2 rounded-md text-white bg-[#e38b29] hover:brightness-110"
-            onClick={handleSubmit}
-          >
+          <button className="px-4 py-2 rounded-md text-white bg-[#e38b29] hover:brightness-110" onClick={handleSubmit}>
             Submit
           </button>
         </div>
@@ -206,7 +216,7 @@ const Home = () => {
                 <button className="p-2 bg-gray-200 rounded-md mr-2 hover:bg-gray-300" onClick={() => handleEdit(activity)}>✎</button>
               )}
 
-              <button className="p-2 bg-red-200 rounded-md mr-2 hover:bg-red-300" onClick={() => handleDeleteActivity(activity.id)}>🗑</button>
+              <button className="p-2 bg-red-200 rounded-md mr-2 hover:bg-red-300" onClick={() => confirmDeleteActivity(activity.id)}>🗑</button>
 
               <button
                 className={`px-4 py-2 rounded-md hover:brightness-110 ${activity.completed ? 'bg-green-400 text-white' : 'bg-red-400 text-white'}`}
@@ -217,6 +227,20 @@ const Home = () => {
             </div>
           ))}
         </div>
+
+        {/* Delete confirmation modal */}
+        {showDeleteModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded-md shadow-md w-96">
+              <h2 className="text-lg font-semibold mb-4">Delete Activity?</h2>
+              <p className="mb-6">Are you sure you want to delete your activity?</p>
+              <div className="flex justify-end space-x-4">
+                <button className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300" onClick={handleCancelDelete}>Cancel</button>
+                <button className="px-4 py-2 bg-amber-500 text-white rounded-md hover:bg-amber-600" onClick={handleDeleteActivity}>Delete</button>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );
