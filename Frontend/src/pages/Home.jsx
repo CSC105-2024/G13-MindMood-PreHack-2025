@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from "react-router-dom";
 
 const Home = () => {
@@ -14,21 +14,42 @@ const Home = () => {
 
   const key = `week-${week}-day-${day}`;
 
-  useEffect(() => {
-    if (day > 7) {
-      setDay(1);
-      setWeek(prev => prev < 4 ? prev + 1 : 1);
-    }
-    if (day < 1) {
-      setDay(7);
-      setWeek(prev => prev > 1 ? prev - 1 : 4);
-    }
-  }, [day]);
+  const clampDayWeek = (nextDay, nextWeek) => {
+    let newDay = nextDay;
+    let newWeek = nextWeek;
 
-  useEffect(() => {
-    if (week > 4) setWeek(1);
-    if (week < 1) setWeek(4);
-  }, [week]);
+    if (newDay > 7) {
+      newDay = 1;
+      newWeek = newWeek < 4 ? newWeek + 1 : 1;
+    } else if (newDay < 1) {
+      newDay = 7;
+      newWeek = newWeek > 1 ? newWeek - 1 : 4;
+    }
+
+    return [newDay, newWeek];
+  };
+
+  const handleNextDay = () => {
+    const [newDay, newWeek] = clampDayWeek(day + 1, week);
+    setDay(newDay);
+    setWeek(newWeek);
+  };
+
+  const handlePrevDay = () => {
+    const [newDay, newWeek] = clampDayWeek(day - 1, week);
+    setDay(newDay);
+    setWeek(newWeek);
+  };
+
+  const handleNextWeek = () => {
+    const newWeek = week < 4 ? week + 1 : 1;
+    setWeek(newWeek);
+  };
+
+  const handlePrevWeek = () => {
+    const newWeek = week > 1 ? week - 1 : 4;
+    setWeek(newWeek);
+  };
 
   const handleAddActivity = () => {
     if (newActivity.trim()) {
@@ -85,13 +106,8 @@ const Home = () => {
     setEditText('');
   };
 
-  const goToPreviousDay = () => setDay(prev => prev - 1);
-  const goToNextDay = () => setDay(prev => prev + 1);
-  const goToPreviousWeek = () => setWeek(prev => prev - 1);
-  const goToNextWeek = () => setWeek(prev => prev + 1);
-
   const handleSubmit = () => {
-    setDay(prevDay => prevDay + 1);
+    handleNextDay(); // Moves to the next day and adjusts week if necessary
   };
 
   return (
@@ -100,14 +116,14 @@ const Home = () => {
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center space-x-2">
             <span className="text-lg font-medium">Week {week}</span>
-            <button className="p-1 rounded-full hover:bg-gray-300" onClick={goToPreviousWeek}>⇦</button>
-            <button className="p-1 rounded-full hover:bg-gray-300" onClick={goToNextWeek}>⇨</button>
+            <button className="p-1 rounded-full hover:bg-gray-300" onClick={handlePrevWeek}>⇦</button>
+            <button className="p-1 rounded-full hover:bg-gray-300" onClick={handleNextWeek}>⇨</button>
           </div>
 
           <div className="flex items-center space-x-2">
             <span className="text-lg font-medium">Day {day}</span>
-            <button className="p-1 rounded-full hover:bg-gray-300" onClick={goToPreviousDay}>⇦</button>
-            <button className="p-1 rounded-full hover:bg-gray-300" onClick={goToNextDay}>⇨</button>
+            <button className="p-1 rounded-full hover:bg-gray-300" onClick={handlePrevDay}>⇦</button>
+            <button className="p-1 rounded-full hover:bg-gray-300" onClick={handleNextDay}>⇨</button>
           </div>
 
           <button
@@ -118,6 +134,7 @@ const Home = () => {
           </button>
         </div>
 
+        {/* Add activity form */}
         <div className="bg-white rounded-md p-4 shadow-sm mb-6">
           {isAddingActivity ? (
             <div className="flex items-center justify-between">
@@ -139,6 +156,7 @@ const Home = () => {
           )}
         </div>
 
+        {/* Activity list */}
         <div className="bg-white rounded-md p-4 shadow-sm">
           {(activities[key] || []).map(activity => (
             <div key={activity.id} className="mb-4 flex items-center">
