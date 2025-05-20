@@ -10,14 +10,21 @@ import ResetPassword from './pages/ResetPassword.jsx'
 import ForgetPassword from './pages/ForgetPassword.jsx'
 import ProfilePage from './pages/Profile.jsx'
 import ProtectedRoute from './components/ProtectRoutes.jsx'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
+
+// Force React to check local storage before initializing routes
+const token = localStorage.getItem('token');
+console.log("Initial Token Check:", token ? "Token exists" : "No token found");
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
     children: [
-      { path: '/', element: <Login /> },
+      { 
+        path: '/', 
+        element: token ? <Navigate to="/Home" /> : <Login /> 
+      },
       { 
         path: '/Home', 
         element: <ProtectedRoute><Home /></ProtectedRoute> 
@@ -26,9 +33,18 @@ const router = createBrowserRouter([
         path: '/Overall', 
         element: <ProtectedRoute><Overall /></ProtectedRoute> 
       },
-      { path: '/Signup', element: <SignUp /> },
-      { path: '/ResetPassword/:token', element: <ResetPassword /> },
-      { path: '/ForgotPassword', element: <ForgetPassword /> },
+      { 
+        path: '/Signup', 
+        element: <SignUp /> 
+      },
+      { 
+        path: '/ResetPassword/:token', 
+        element: <ResetPassword /> 
+      },
+      { 
+        path: '/ForgotPassword', 
+        element: <ForgetPassword /> 
+      },
       { 
         path: '/profile', 
         element: <ProtectedRoute><ProfilePage /></ProtectedRoute> 

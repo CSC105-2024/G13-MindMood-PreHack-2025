@@ -4,14 +4,15 @@ generator client {
 }
 
 datasource db {
-  provider          = "mysql"
-  url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  username String @unique
-  email    String @unique
-  password String
+  id             Int      @id @default(autoincrement())
+  username       String   @unique
+  email          String   @unique
+  password       String
+  profilePicture String?
+  createdAt      DateTime @default(now())
 }

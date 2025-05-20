@@ -9,6 +9,15 @@ export const useAuth = () => {
   return useContext(AuthContext);
 };
 
+// Configure axios defaults for token usage
+const configureAxios = (token) => {
+  if (token) {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  } else {
+    delete axios.defaults.headers.common['Authorization'];
+  }
+};
+
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
@@ -17,9 +26,14 @@ export const AuthProvider = ({ children }) => {
   // Check if user is authenticated on initial load
   useEffect(() => {
     const checkAuthStatus = async () => {
+      setLoading(true); // Ensure loading is true at the start
+      
       const token = localStorage.getItem('token');
       
       if (token) {
+        // Configure axios with the token
+        configureAxios(token);
+        
         try {
           // Verify token with backend
           const response = await axios.get('http://localhost:3000/auth/verify-token', {
@@ -27,21 +41,26 @@ export const AuthProvider = ({ children }) => {
           });
           
           if (response.data.valid) {
+            console.log('Token verified successfully');
             setIsAuthenticated(true);
             setUser(response.data.user);
           } else {
+            console.log('Token is invalid');
             // Token is invalid or expired
             localStorage.removeItem('token');
+            configureAxios(null);
             setIsAuthenticated(false);
             setUser(null);
           }
         } catch (error) {
           console.error('Token verification failed:', error);
           localStorage.removeItem('token');
+          configureAxios(null);
           setIsAuthenticated(false);
           setUser(null);
         }
       } else {
+        console.log('No token found');
         setIsAuthenticated(false);
         setUser(null);
       }
@@ -59,6 +78,7 @@ export const AuthProvider = ({ children }) => {
       
       if (response.data.token) {
         localStorage.setItem('token', response.data.token);
+        configureAxios(response.data.token);
         setIsAuthenticated(true);
         setUser(response.data.user);
         return { success: true };
@@ -77,6 +97,7 @@ export const AuthProvider = ({ children }) => {
   // Logout function
   const logout = () => {
     localStorage.removeItem('token');
+    configureAxios(null);
     setIsAuthenticated(false);
     setUser(null);
   };
@@ -92,7 +113,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children}
+      {children}
     </AuthContext.Provider>
   );
 };

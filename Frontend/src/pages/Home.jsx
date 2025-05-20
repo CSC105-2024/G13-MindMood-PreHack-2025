@@ -126,6 +126,7 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-amber-50">
+      <Navbar />
       <main className="max-w-4xl mx-auto p-6">
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center space-x-2">

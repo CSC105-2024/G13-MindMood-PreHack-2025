@@ -66,7 +66,8 @@ export const login = async (c: Context) => {
       user: {
         id: user.id,
         username: user.username,
-        email: user.email
+        email: user.email,
+        profilePicture: user.profilePicture
       }
     });
   } catch (err) {
@@ -139,7 +140,9 @@ export const getProfile = async (c: Context) => {
       select: {
         id: true,
         username: true,
-        email: true
+        email: true,
+        profilePicture: true,
+        createdAt: true
       }
     });
    
@@ -159,6 +162,7 @@ export const getProfile = async (c: Context) => {
 
 export const updateProfile = async (c: Context) => {
   try {
+    // Authenticate user
     const authHeader = c.req.header('Authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return c.json({ status: false, message: 'Unauthorized' }, 401);
@@ -166,15 +170,70 @@ export const updateProfile = async (c: Context) => {
     const token = authHeader.split(' ')[1];
     const decoded = jwt.verify(token, JWT_SECRET) as { id: number };
 
-    const { username } = await c.req.json();
+    // Handle multipart form data
+    const formData = await c.req.formData();
+    const username = formData.get('username') as string;
+    const profilePicture = formData.get('profilePicture') as File | null;
 
-    const updatedUser = await prisma.user.update({
-      where: { id: decoded.id },
-      data: { username },
-      select: { id: true, username: true, email: true },
+    // Log what we received (for debugging)
+    console.log("Update request received:", { 
+      username, 
+      hasProfilePicture: !!profilePicture,
+      pictureType: profilePicture?.type,
+      pictureSize: profilePicture?.size 
     });
 
-    return c.json({ status: true, user: updatedUser });
+    // Prepare update data
+    const updateData: any = { username };
+
+    // Handle profile picture if provided
+    if (profilePicture && profilePicture.size > 0) {
+      try {
+        // Convert file to Base64 for storage
+        const arrayBuffer = await profilePicture.arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
+        const base64Image = `data:${profilePicture.type};base64,${buffer.toString('base64')}`;
+        
+        // Check if the encoded image isn't too large (SQLite has limits)
+        if (base64Image.length > 1000000) { // ~1MB limit
+          return c.json({ 
+            status: false, 
+            message: 'Image too large. Please choose a smaller image (< 1MB).' 
+          }, 400);
+        }
+        
+        updateData.profilePicture = base64Image;
+        console.log("Image successfully encoded, length:", base64Image.length);
+      } catch (imageError) {
+        console.error("Error processing image:", imageError);
+        return c.json({ 
+          status: false, 
+          message: 'Error processing image. Please try another format or size.' 
+        }, 400);
+      }
+    }
+
+    // Update user in database
+    try {
+      const updatedUser = await prisma.user.update({
+        where: { id: decoded.id },
+        data: updateData,
+        select: { 
+          id: true, 
+          username: true, 
+          email: true, 
+          profilePicture: true 
+        },
+      });
+
+      return c.json({ status: true, user: updatedUser });
+    } catch (dbError: any) {
+      console.error("Database update error:", dbError);
+      return c.json({ 
+        status: false, 
+        message: dbError.code === 'P2002' ? 'Username already taken' : 'Database update failed' 
+      }, 400);
+    }
   } catch (error) {
     console.error('Update profile error:', error);
     return c.json({ status: false, message: 'Failed to update profile' }, 500);
@@ -210,7 +269,12 @@ export const verifyToken = async (c: Context) => {
       
       const user = await prisma.user.findUnique({
         where: { id: decoded.id },
-        select: { id: true, username: true, email: true }
+        select: { 
+          id: true, 
+          username: true, 
+          email: true,
+          profilePicture: true 
+        }
       });
       
       if (!user) {
