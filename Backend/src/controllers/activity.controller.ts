@@ -1,32 +1,34 @@
 import type { Context } from 'hono';
 import * as activityModel from '../models/activityModel.ts';
- 
-const getUserIdFromContext = (c: Context): number => {
-  const jwtPayload = c.get('jwtPayload');
-  if (!jwtPayload || !jwtPayload.userId) {
-    // For testing purposes, return a default user ID
-    // In production, you should have JWT middleware that sets jwtPayload
-    console.log('Warning: No JWT payload found, using test user ID');
-    return 1; // Default test user ID
+import { verifyAuth } from '../middlewares/auth.ts';
+const getUserIdFromContext = async (c: Context): Promise<number> => {
+  const userId = await verifyAuth(c);
+  if (!userId) {
+    throw new Error('Unauthorized: Invalid or missing authentication token');
   }
-  return jwtPayload.userId;
+  return userId;
 };
  
 export const getActivitiesByUser = async (c: Context) => {
   try {
-    const userId = getUserIdFromContext(c);
+    const userId = await getUserIdFromContext(c);
     console.log('[GET ACTIVITIES] userId:', userId);
     const activities = await activityModel.getActivitiesByUser(userId);
     return c.json(activities);
   } catch (error) {
     console.error('[GET ACTIVITIES] Error:', error);
+   
+    if (error instanceof Error && error.message.includes('Unauthorized')) {
+      return c.json({ error: 'Unauthorized' }, 401);
+    }
+   
     return c.json({ error: 'Internal server error' }, 500);
   }
 };
  
 export const getActivityById = async (c: Context) => {
   try {
-    const userId = getUserIdFromContext(c);
+    const userId = await getUserIdFromContext(c);
     const id = Number(c.req.param('id'));
     console.log('[GET ACTIVITY] userId:', userId, 'activityId:', id);
    
@@ -35,13 +37,18 @@ export const getActivityById = async (c: Context) => {
     return c.json(activity);
   } catch (error) {
     console.error('[GET ACTIVITY] Error:', error);
+   
+    if (error instanceof Error && error.message.includes('Unauthorized')) {
+      return c.json({ error: 'Unauthorized' }, 401);
+    }
+   
     return c.json({ error: 'Internal server error' }, 500);
   }
 };
  
 export const createActivity = async (c: Context) => {
   try {
-    const userId = getUserIdFromContext(c);
+    const userId = await getUserIdFromContext(c);
     console.log('[CREATE ACTIVITY] userId from token:', userId);
  
     const body = await c.req.json();
@@ -68,6 +75,11 @@ export const createActivity = async (c: Context) => {
     return c.json(activity, 201);
   } catch (error) {
     console.error('[CREATE ACTIVITY] Error:', error);
+   
+    if (error instanceof Error && error.message.includes('Unauthorized')) {
+      return c.json({ error: 'Unauthorized' }, 401);
+    }
+   
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     return c.json({ error: 'Internal server error', details: errorMessage }, 500);
   }
@@ -75,7 +87,7 @@ export const createActivity = async (c: Context) => {
  
 export const updateActivity = async (c: Context) => {
   try {
-    const userId = getUserIdFromContext(c);
+    const userId = await getUserIdFromContext(c);
     const id = Number(c.req.param('id'));
     const { name, date, mood, completed } = await c.req.json();
  
@@ -96,13 +108,18 @@ export const updateActivity = async (c: Context) => {
     return c.json(updated);
   } catch (error) {
     console.error('[UPDATE ACTIVITY] Error:', error);
+   
+    if (error instanceof Error && error.message.includes('Unauthorized')) {
+      return c.json({ error: 'Unauthorized' }, 401);
+    }
+   
     return c.json({ error: 'Internal server error' }, 500);
   }
 };
  
 export const deleteActivity = async (c: Context) => {
   try {
-    const userId = getUserIdFromContext(c);
+    const userId = await getUserIdFromContext(c);
     const id = Number(c.req.param('id'));
  
     const deleted = await activityModel.deleteActivity(id, userId);
@@ -111,6 +128,11 @@ export const deleteActivity = async (c: Context) => {
     return c.json({ message: 'Deleted', deleted });
   } catch (error) {
     console.error('[DELETE ACTIVITY] Error:', error);
+   
+    if (error instanceof Error && error.message.includes('Unauthorized')) {
+      return c.json({ error: 'Unauthorized' }, 401);
+    }
+   
     return c.json({ error: 'Internal server error' }, 500);
   }
 };
