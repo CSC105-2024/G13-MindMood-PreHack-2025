@@ -9,10 +9,22 @@ datasource db {
 }
 
 model User {
-  id             Int      @id @default(autoincrement())
-  username       String   @unique
-  email          String   @unique
+  id             Int        @id @default(autoincrement())
+  username       String     @unique
+  email          String     @unique
   password       String
   profilePicture String?
-  createdAt      DateTime @default(now())
+  createdAt      DateTime   @default(now())
+  activities     Activity[] @relation("UserActivities")
+}
+
+model Activity {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  name      String
+  mood      String   @default("Neutral")
+  completed Boolean  @default(false)
+  date      DateTime
+
+  user User @relation("UserActivities", fields: [userId], references: [id])
 }

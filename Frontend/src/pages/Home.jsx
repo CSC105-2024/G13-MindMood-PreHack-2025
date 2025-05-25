@@ -13,6 +13,7 @@ const Home = () => {
   const [editText, setEditText] = useState('');
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [activityToDelete, setActivityToDelete] = useState(null);
+  const [showMoodSummary, setShowMoodSummary] = useState(false);
 
   const key = `week-${week}-day-${day}`;
 
@@ -121,32 +122,71 @@ const Home = () => {
   };
 
   const handleSubmit = () => {
-    handleNextDay();
+    setShowMoodSummary(true);
+  };
+
+  const calculateMoodSummary = () => {
+    const moodCounts = { Calm: 0, Neutral: 0, Stressed: 0 };
+    const list = activities[key] || [];
+
+    list.forEach(activity => {
+      if (activity.mood in moodCounts) {
+        moodCounts[activity.mood]++;
+      }
+    });
+
+    const total = list.length || 1;
+    const Calm = Math.round((moodCounts.Calm / total) * 100);
+    const Neutral = Math.round((moodCounts.Neutral / total) * 100);
+    const Stressed = Math.round((moodCounts.Stressed / total) * 100);
+
+    const maxMood = Math.max(Calm, Neutral, Stressed);
+    let overallMood = 'Neutral';
+    if (Calm === maxMood) overallMood = 'You are having a good feeling today';
+    else if (Neutral === maxMood) overallMood = 'You feel neutral today';
+    else overallMood = 'You might be feeling stressed';
+
+    return { Calm, Neutral, Stressed, overallMood };
+  };
+
+  const { Calm, Neutral, Stressed, overallMood } = calculateMoodSummary();
+
+  const getMoodColor = () => {
+    const max = Math.max(Calm, Neutral, Stressed);
+    if (Calm === max) return 'bg-green-500';
+    if (Neutral === max) return 'bg-amber-500';
+    return 'bg-red-500';
+  };
+
+  const getMoodEmoji = () => {
+    const max = Math.max(Calm, Neutral, Stressed);
+    if (Calm === max) return '😊';
+    if (Neutral === max) return '😐';
+    return '😣';
   };
 
   return (
-    <div className="min-h-screen bg-amber-50">
+    <>
       <Navbar />
       <main className="max-w-4xl mx-auto p-6">
+        {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center space-x-2">
             <span className="text-lg font-medium">Week {week}</span>
             <button className="p-1 rounded-full hover:bg-gray-300" onClick={handlePrevWeek}>⇦</button>
             <button className="p-1 rounded-full hover:bg-gray-300" onClick={handleNextWeek}>⇨</button>
           </div>
-
           <div className="flex items-center space-x-2">
             <span className="text-lg font-medium">Day {day}</span>
             <button className="p-1 rounded-full hover:bg-gray-300" onClick={handlePrevDay}>⇦</button>
             <button className="p-1 rounded-full hover:bg-gray-300" onClick={handleNextDay}>⇨</button>
           </div>
-
           <button className="px-4 py-2 rounded-md text-white bg-[#e38b29] hover:brightness-110" onClick={handleSubmit}>
             Submit
           </button>
         </div>
 
-        {/* Add activity form */}
+        {/* Add Activity */}
         <div className="bg-white rounded-md p-4 shadow-sm mb-6">
           {isAddingActivity ? (
             <div className="flex items-center justify-between">
@@ -168,7 +208,7 @@ const Home = () => {
           )}
         </div>
 
-        {/* Activity list */}
+        {/* Activity List */}
         <div className="bg-white rounded-md p-4 shadow-sm">
           {(activities[key] || []).map(activity => (
             <div key={activity.id} className="mb-4 flex items-center">
@@ -198,7 +238,6 @@ const Home = () => {
                 >
                   {activity.mood}
                 </button>
-
                 {showMoodSelector && selectedActivityId === activity.id && (
                   <div className="absolute z-10 mt-1 w-full shadow-md rounded-md bg-white">
                     <button className="w-full py-2 text-left px-4 hover:bg-green-500 bg-green-400 text-white block" onClick={() => handleSetMood(activity.id, 'Calm')}>Calm</button>
@@ -229,7 +268,34 @@ const Home = () => {
           ))}
         </div>
 
-        {/* Delete confirmation modal */}
+        {/* Mood Summary Modal */}
+        {showMoodSummary && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 z-50">
+            <div className={`text-white p-8 rounded-md text-center shadow-md w-[320px] ${getMoodColor()}`}>
+              <div className="text-5xl mb-4">
+                {getMoodEmoji()}
+              </div>
+              <h2 className="text-xl font-semibold mb-2">Day {day}</h2>
+              <p className="mb-4">Overall: {overallMood}</p>
+              <div className="text-sm mb-4 space-y-1">
+                <p>Calm : {Calm}%</p>
+                <p>Neutral : {Neutral}%</p>
+                <p>Stressed : {Stressed}%</p>
+              </div>
+              <button
+                className="bg-black text-white px-4 py-2 rounded-md hover:brightness-110"
+                onClick={() => {
+                  setShowMoodSummary(false);
+                  handleNextDay();
+                }}
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Delete Modal */}
         {showDeleteModal && (
           <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
             <div className="bg-white p-6 rounded-md shadow-md w-96">
@@ -243,7 +309,7 @@ const Home = () => {
           </div>
         )}
       </main>
-    </div>
+    </>
   );
 };
 
