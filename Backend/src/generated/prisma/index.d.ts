@@ -23,6 +23,11 @@ export type User = $Result.DefaultSelection<Prisma.$UserPayload>
  * 
  */
 export type Activity = $Result.DefaultSelection<Prisma.$ActivityPayload>
+/**
+ * Model Submission
+ * 
+ */
+export type Submission = $Result.DefaultSelection<Prisma.$SubmissionPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -168,6 +173,16 @@ export class PrismaClient<
     * ```
     */
   get activity(): Prisma.ActivityDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.submission`: Exposes CRUD operations for the **Submission** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Submissions
+    * const submissions = await prisma.submission.findMany()
+    * ```
+    */
+  get submission(): Prisma.SubmissionDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -609,7 +624,8 @@ export namespace Prisma {
 
   export const ModelName: {
     User: 'User',
-    Activity: 'Activity'
+    Activity: 'Activity',
+    Submission: 'Submission'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -628,7 +644,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "activity"
+      modelProps: "user" | "activity" | "submission"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -780,6 +796,80 @@ export namespace Prisma {
           }
         }
       }
+      Submission: {
+        payload: Prisma.$SubmissionPayload<ExtArgs>
+        fields: Prisma.SubmissionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SubmissionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SubmissionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionPayload>
+          }
+          findFirst: {
+            args: Prisma.SubmissionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SubmissionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionPayload>
+          }
+          findMany: {
+            args: Prisma.SubmissionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionPayload>[]
+          }
+          create: {
+            args: Prisma.SubmissionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionPayload>
+          }
+          createMany: {
+            args: Prisma.SubmissionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SubmissionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionPayload>[]
+          }
+          delete: {
+            args: Prisma.SubmissionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionPayload>
+          }
+          update: {
+            args: Prisma.SubmissionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionPayload>
+          }
+          deleteMany: {
+            args: Prisma.SubmissionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SubmissionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SubmissionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionPayload>[]
+          }
+          upsert: {
+            args: Prisma.SubmissionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubmissionPayload>
+          }
+          aggregate: {
+            args: Prisma.SubmissionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSubmission>
+          }
+          groupBy: {
+            args: Prisma.SubmissionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SubmissionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SubmissionCountArgs<ExtArgs>
+            result: $Utils.Optional<SubmissionCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -866,6 +956,7 @@ export namespace Prisma {
   export type GlobalOmitConfig = {
     user?: UserOmit
     activity?: ActivityOmit
+    submission?: SubmissionOmit
   }
 
   /* Types for Logging */
@@ -961,10 +1052,12 @@ export namespace Prisma {
 
   export type UserCountOutputType = {
     activities: number
+    submissions: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     activities?: boolean | UserCountOutputTypeCountActivitiesArgs
+    submissions?: boolean | UserCountOutputTypeCountSubmissionsArgs
   }
 
   // Custom InputTypes
@@ -983,6 +1076,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountActivitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ActivityWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSubmissionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SubmissionWhereInput
   }
 
 
@@ -1197,6 +1297,7 @@ export namespace Prisma {
     profilePicture?: boolean
     createdAt?: boolean
     activities?: boolean | User$activitiesArgs<ExtArgs>
+    submissions?: boolean | User$submissionsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1230,6 +1331,7 @@ export namespace Prisma {
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "email" | "password" | "profilePicture" | "createdAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     activities?: boolean | User$activitiesArgs<ExtArgs>
+    submissions?: boolean | User$submissionsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1239,6 +1341,7 @@ export namespace Prisma {
     name: "User"
     objects: {
       activities: Prisma.$ActivityPayload<ExtArgs>[]
+      submissions: Prisma.$SubmissionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -1642,6 +1745,7 @@ export namespace Prisma {
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     activities<T extends User$activitiesArgs<ExtArgs> = {}>(args?: Subset<T, User$activitiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActivityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    submissions<T extends User$submissionsArgs<ExtArgs> = {}>(args?: Subset<T, User$submissionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2084,6 +2188,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ActivityScalarFieldEnum | ActivityScalarFieldEnum[]
+  }
+
+  /**
+   * User.submissions
+   */
+  export type User$submissionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Submission
+     */
+    select?: SubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Submission
+     */
+    omit?: SubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionInclude<ExtArgs> | null
+    where?: SubmissionWhereInput
+    orderBy?: SubmissionOrderByWithRelationInput | SubmissionOrderByWithRelationInput[]
+    cursor?: SubmissionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SubmissionScalarFieldEnum | SubmissionScalarFieldEnum[]
   }
 
   /**
@@ -3260,6 +3388,1279 @@ export namespace Prisma {
 
 
   /**
+   * Model Submission
+   */
+
+  export type AggregateSubmission = {
+    _count: SubmissionCountAggregateOutputType | null
+    _avg: SubmissionAvgAggregateOutputType | null
+    _sum: SubmissionSumAggregateOutputType | null
+    _min: SubmissionMinAggregateOutputType | null
+    _max: SubmissionMaxAggregateOutputType | null
+  }
+
+  export type SubmissionAvgAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    week: number | null
+    day: number | null
+    totalActivities: number | null
+    calmCount: number | null
+    neutralCount: number | null
+    stressedCount: number | null
+    calmPercentage: number | null
+    neutralPercentage: number | null
+    stressedPercentage: number | null
+  }
+
+  export type SubmissionSumAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    week: number | null
+    day: number | null
+    totalActivities: number | null
+    calmCount: number | null
+    neutralCount: number | null
+    stressedCount: number | null
+    calmPercentage: number | null
+    neutralPercentage: number | null
+    stressedPercentage: number | null
+  }
+
+  export type SubmissionMinAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    week: number | null
+    day: number | null
+    overallMood: string | null
+    overallMessage: string | null
+    totalActivities: number | null
+    calmCount: number | null
+    neutralCount: number | null
+    stressedCount: number | null
+    calmPercentage: number | null
+    neutralPercentage: number | null
+    stressedPercentage: number | null
+    activitiesData: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SubmissionMaxAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    week: number | null
+    day: number | null
+    overallMood: string | null
+    overallMessage: string | null
+    totalActivities: number | null
+    calmCount: number | null
+    neutralCount: number | null
+    stressedCount: number | null
+    calmPercentage: number | null
+    neutralPercentage: number | null
+    stressedPercentage: number | null
+    activitiesData: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SubmissionCountAggregateOutputType = {
+    id: number
+    userId: number
+    week: number
+    day: number
+    overallMood: number
+    overallMessage: number
+    totalActivities: number
+    calmCount: number
+    neutralCount: number
+    stressedCount: number
+    calmPercentage: number
+    neutralPercentage: number
+    stressedPercentage: number
+    activitiesData: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type SubmissionAvgAggregateInputType = {
+    id?: true
+    userId?: true
+    week?: true
+    day?: true
+    totalActivities?: true
+    calmCount?: true
+    neutralCount?: true
+    stressedCount?: true
+    calmPercentage?: true
+    neutralPercentage?: true
+    stressedPercentage?: true
+  }
+
+  export type SubmissionSumAggregateInputType = {
+    id?: true
+    userId?: true
+    week?: true
+    day?: true
+    totalActivities?: true
+    calmCount?: true
+    neutralCount?: true
+    stressedCount?: true
+    calmPercentage?: true
+    neutralPercentage?: true
+    stressedPercentage?: true
+  }
+
+  export type SubmissionMinAggregateInputType = {
+    id?: true
+    userId?: true
+    week?: true
+    day?: true
+    overallMood?: true
+    overallMessage?: true
+    totalActivities?: true
+    calmCount?: true
+    neutralCount?: true
+    stressedCount?: true
+    calmPercentage?: true
+    neutralPercentage?: true
+    stressedPercentage?: true
+    activitiesData?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SubmissionMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    week?: true
+    day?: true
+    overallMood?: true
+    overallMessage?: true
+    totalActivities?: true
+    calmCount?: true
+    neutralCount?: true
+    stressedCount?: true
+    calmPercentage?: true
+    neutralPercentage?: true
+    stressedPercentage?: true
+    activitiesData?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SubmissionCountAggregateInputType = {
+    id?: true
+    userId?: true
+    week?: true
+    day?: true
+    overallMood?: true
+    overallMessage?: true
+    totalActivities?: true
+    calmCount?: true
+    neutralCount?: true
+    stressedCount?: true
+    calmPercentage?: true
+    neutralPercentage?: true
+    stressedPercentage?: true
+    activitiesData?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type SubmissionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Submission to aggregate.
+     */
+    where?: SubmissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Submissions to fetch.
+     */
+    orderBy?: SubmissionOrderByWithRelationInput | SubmissionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SubmissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Submissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Submissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Submissions
+    **/
+    _count?: true | SubmissionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SubmissionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SubmissionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SubmissionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SubmissionMaxAggregateInputType
+  }
+
+  export type GetSubmissionAggregateType<T extends SubmissionAggregateArgs> = {
+        [P in keyof T & keyof AggregateSubmission]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSubmission[P]>
+      : GetScalarType<T[P], AggregateSubmission[P]>
+  }
+
+
+
+
+  export type SubmissionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SubmissionWhereInput
+    orderBy?: SubmissionOrderByWithAggregationInput | SubmissionOrderByWithAggregationInput[]
+    by: SubmissionScalarFieldEnum[] | SubmissionScalarFieldEnum
+    having?: SubmissionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SubmissionCountAggregateInputType | true
+    _avg?: SubmissionAvgAggregateInputType
+    _sum?: SubmissionSumAggregateInputType
+    _min?: SubmissionMinAggregateInputType
+    _max?: SubmissionMaxAggregateInputType
+  }
+
+  export type SubmissionGroupByOutputType = {
+    id: number
+    userId: number
+    week: number
+    day: number
+    overallMood: string
+    overallMessage: string
+    totalActivities: number
+    calmCount: number
+    neutralCount: number
+    stressedCount: number
+    calmPercentage: number
+    neutralPercentage: number
+    stressedPercentage: number
+    activitiesData: string
+    createdAt: Date
+    updatedAt: Date
+    _count: SubmissionCountAggregateOutputType | null
+    _avg: SubmissionAvgAggregateOutputType | null
+    _sum: SubmissionSumAggregateOutputType | null
+    _min: SubmissionMinAggregateOutputType | null
+    _max: SubmissionMaxAggregateOutputType | null
+  }
+
+  type GetSubmissionGroupByPayload<T extends SubmissionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SubmissionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SubmissionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SubmissionGroupByOutputType[P]>
+            : GetScalarType<T[P], SubmissionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SubmissionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    week?: boolean
+    day?: boolean
+    overallMood?: boolean
+    overallMessage?: boolean
+    totalActivities?: boolean
+    calmCount?: boolean
+    neutralCount?: boolean
+    stressedCount?: boolean
+    calmPercentage?: boolean
+    neutralPercentage?: boolean
+    stressedPercentage?: boolean
+    activitiesData?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["submission"]>
+
+  export type SubmissionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    week?: boolean
+    day?: boolean
+    overallMood?: boolean
+    overallMessage?: boolean
+    totalActivities?: boolean
+    calmCount?: boolean
+    neutralCount?: boolean
+    stressedCount?: boolean
+    calmPercentage?: boolean
+    neutralPercentage?: boolean
+    stressedPercentage?: boolean
+    activitiesData?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["submission"]>
+
+  export type SubmissionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    week?: boolean
+    day?: boolean
+    overallMood?: boolean
+    overallMessage?: boolean
+    totalActivities?: boolean
+    calmCount?: boolean
+    neutralCount?: boolean
+    stressedCount?: boolean
+    calmPercentage?: boolean
+    neutralPercentage?: boolean
+    stressedPercentage?: boolean
+    activitiesData?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["submission"]>
+
+  export type SubmissionSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    week?: boolean
+    day?: boolean
+    overallMood?: boolean
+    overallMessage?: boolean
+    totalActivities?: boolean
+    calmCount?: boolean
+    neutralCount?: boolean
+    stressedCount?: boolean
+    calmPercentage?: boolean
+    neutralPercentage?: boolean
+    stressedPercentage?: boolean
+    activitiesData?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type SubmissionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "week" | "day" | "overallMood" | "overallMessage" | "totalActivities" | "calmCount" | "neutralCount" | "stressedCount" | "calmPercentage" | "neutralPercentage" | "stressedPercentage" | "activitiesData" | "createdAt" | "updatedAt", ExtArgs["result"]["submission"]>
+  export type SubmissionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type SubmissionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type SubmissionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $SubmissionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Submission"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      userId: number
+      week: number
+      day: number
+      overallMood: string
+      overallMessage: string
+      totalActivities: number
+      calmCount: number
+      neutralCount: number
+      stressedCount: number
+      calmPercentage: number
+      neutralPercentage: number
+      stressedPercentage: number
+      activitiesData: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["submission"]>
+    composites: {}
+  }
+
+  type SubmissionGetPayload<S extends boolean | null | undefined | SubmissionDefaultArgs> = $Result.GetResult<Prisma.$SubmissionPayload, S>
+
+  type SubmissionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SubmissionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SubmissionCountAggregateInputType | true
+    }
+
+  export interface SubmissionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Submission'], meta: { name: 'Submission' } }
+    /**
+     * Find zero or one Submission that matches the filter.
+     * @param {SubmissionFindUniqueArgs} args - Arguments to find a Submission
+     * @example
+     * // Get one Submission
+     * const submission = await prisma.submission.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SubmissionFindUniqueArgs>(args: SelectSubset<T, SubmissionFindUniqueArgs<ExtArgs>>): Prisma__SubmissionClient<$Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Submission that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SubmissionFindUniqueOrThrowArgs} args - Arguments to find a Submission
+     * @example
+     * // Get one Submission
+     * const submission = await prisma.submission.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SubmissionFindUniqueOrThrowArgs>(args: SelectSubset<T, SubmissionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SubmissionClient<$Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Submission that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubmissionFindFirstArgs} args - Arguments to find a Submission
+     * @example
+     * // Get one Submission
+     * const submission = await prisma.submission.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SubmissionFindFirstArgs>(args?: SelectSubset<T, SubmissionFindFirstArgs<ExtArgs>>): Prisma__SubmissionClient<$Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Submission that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubmissionFindFirstOrThrowArgs} args - Arguments to find a Submission
+     * @example
+     * // Get one Submission
+     * const submission = await prisma.submission.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SubmissionFindFirstOrThrowArgs>(args?: SelectSubset<T, SubmissionFindFirstOrThrowArgs<ExtArgs>>): Prisma__SubmissionClient<$Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Submissions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubmissionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Submissions
+     * const submissions = await prisma.submission.findMany()
+     * 
+     * // Get first 10 Submissions
+     * const submissions = await prisma.submission.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const submissionWithIdOnly = await prisma.submission.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SubmissionFindManyArgs>(args?: SelectSubset<T, SubmissionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Submission.
+     * @param {SubmissionCreateArgs} args - Arguments to create a Submission.
+     * @example
+     * // Create one Submission
+     * const Submission = await prisma.submission.create({
+     *   data: {
+     *     // ... data to create a Submission
+     *   }
+     * })
+     * 
+     */
+    create<T extends SubmissionCreateArgs>(args: SelectSubset<T, SubmissionCreateArgs<ExtArgs>>): Prisma__SubmissionClient<$Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Submissions.
+     * @param {SubmissionCreateManyArgs} args - Arguments to create many Submissions.
+     * @example
+     * // Create many Submissions
+     * const submission = await prisma.submission.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SubmissionCreateManyArgs>(args?: SelectSubset<T, SubmissionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Submissions and returns the data saved in the database.
+     * @param {SubmissionCreateManyAndReturnArgs} args - Arguments to create many Submissions.
+     * @example
+     * // Create many Submissions
+     * const submission = await prisma.submission.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Submissions and only return the `id`
+     * const submissionWithIdOnly = await prisma.submission.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SubmissionCreateManyAndReturnArgs>(args?: SelectSubset<T, SubmissionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Submission.
+     * @param {SubmissionDeleteArgs} args - Arguments to delete one Submission.
+     * @example
+     * // Delete one Submission
+     * const Submission = await prisma.submission.delete({
+     *   where: {
+     *     // ... filter to delete one Submission
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SubmissionDeleteArgs>(args: SelectSubset<T, SubmissionDeleteArgs<ExtArgs>>): Prisma__SubmissionClient<$Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Submission.
+     * @param {SubmissionUpdateArgs} args - Arguments to update one Submission.
+     * @example
+     * // Update one Submission
+     * const submission = await prisma.submission.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SubmissionUpdateArgs>(args: SelectSubset<T, SubmissionUpdateArgs<ExtArgs>>): Prisma__SubmissionClient<$Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Submissions.
+     * @param {SubmissionDeleteManyArgs} args - Arguments to filter Submissions to delete.
+     * @example
+     * // Delete a few Submissions
+     * const { count } = await prisma.submission.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SubmissionDeleteManyArgs>(args?: SelectSubset<T, SubmissionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Submissions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubmissionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Submissions
+     * const submission = await prisma.submission.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SubmissionUpdateManyArgs>(args: SelectSubset<T, SubmissionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Submissions and returns the data updated in the database.
+     * @param {SubmissionUpdateManyAndReturnArgs} args - Arguments to update many Submissions.
+     * @example
+     * // Update many Submissions
+     * const submission = await prisma.submission.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Submissions and only return the `id`
+     * const submissionWithIdOnly = await prisma.submission.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SubmissionUpdateManyAndReturnArgs>(args: SelectSubset<T, SubmissionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Submission.
+     * @param {SubmissionUpsertArgs} args - Arguments to update or create a Submission.
+     * @example
+     * // Update or create a Submission
+     * const submission = await prisma.submission.upsert({
+     *   create: {
+     *     // ... data to create a Submission
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Submission we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SubmissionUpsertArgs>(args: SelectSubset<T, SubmissionUpsertArgs<ExtArgs>>): Prisma__SubmissionClient<$Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Submissions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubmissionCountArgs} args - Arguments to filter Submissions to count.
+     * @example
+     * // Count the number of Submissions
+     * const count = await prisma.submission.count({
+     *   where: {
+     *     // ... the filter for the Submissions we want to count
+     *   }
+     * })
+    **/
+    count<T extends SubmissionCountArgs>(
+      args?: Subset<T, SubmissionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SubmissionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Submission.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubmissionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SubmissionAggregateArgs>(args: Subset<T, SubmissionAggregateArgs>): Prisma.PrismaPromise<GetSubmissionAggregateType<T>>
+
+    /**
+     * Group by Submission.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubmissionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SubmissionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SubmissionGroupByArgs['orderBy'] }
+        : { orderBy?: SubmissionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SubmissionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSubmissionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Submission model
+   */
+  readonly fields: SubmissionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Submission.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SubmissionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Submission model
+   */
+  interface SubmissionFieldRefs {
+    readonly id: FieldRef<"Submission", 'Int'>
+    readonly userId: FieldRef<"Submission", 'Int'>
+    readonly week: FieldRef<"Submission", 'Int'>
+    readonly day: FieldRef<"Submission", 'Int'>
+    readonly overallMood: FieldRef<"Submission", 'String'>
+    readonly overallMessage: FieldRef<"Submission", 'String'>
+    readonly totalActivities: FieldRef<"Submission", 'Int'>
+    readonly calmCount: FieldRef<"Submission", 'Int'>
+    readonly neutralCount: FieldRef<"Submission", 'Int'>
+    readonly stressedCount: FieldRef<"Submission", 'Int'>
+    readonly calmPercentage: FieldRef<"Submission", 'Int'>
+    readonly neutralPercentage: FieldRef<"Submission", 'Int'>
+    readonly stressedPercentage: FieldRef<"Submission", 'Int'>
+    readonly activitiesData: FieldRef<"Submission", 'String'>
+    readonly createdAt: FieldRef<"Submission", 'DateTime'>
+    readonly updatedAt: FieldRef<"Submission", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Submission findUnique
+   */
+  export type SubmissionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Submission
+     */
+    select?: SubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Submission
+     */
+    omit?: SubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionInclude<ExtArgs> | null
+    /**
+     * Filter, which Submission to fetch.
+     */
+    where: SubmissionWhereUniqueInput
+  }
+
+  /**
+   * Submission findUniqueOrThrow
+   */
+  export type SubmissionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Submission
+     */
+    select?: SubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Submission
+     */
+    omit?: SubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionInclude<ExtArgs> | null
+    /**
+     * Filter, which Submission to fetch.
+     */
+    where: SubmissionWhereUniqueInput
+  }
+
+  /**
+   * Submission findFirst
+   */
+  export type SubmissionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Submission
+     */
+    select?: SubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Submission
+     */
+    omit?: SubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionInclude<ExtArgs> | null
+    /**
+     * Filter, which Submission to fetch.
+     */
+    where?: SubmissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Submissions to fetch.
+     */
+    orderBy?: SubmissionOrderByWithRelationInput | SubmissionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Submissions.
+     */
+    cursor?: SubmissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Submissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Submissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Submissions.
+     */
+    distinct?: SubmissionScalarFieldEnum | SubmissionScalarFieldEnum[]
+  }
+
+  /**
+   * Submission findFirstOrThrow
+   */
+  export type SubmissionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Submission
+     */
+    select?: SubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Submission
+     */
+    omit?: SubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionInclude<ExtArgs> | null
+    /**
+     * Filter, which Submission to fetch.
+     */
+    where?: SubmissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Submissions to fetch.
+     */
+    orderBy?: SubmissionOrderByWithRelationInput | SubmissionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Submissions.
+     */
+    cursor?: SubmissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Submissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Submissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Submissions.
+     */
+    distinct?: SubmissionScalarFieldEnum | SubmissionScalarFieldEnum[]
+  }
+
+  /**
+   * Submission findMany
+   */
+  export type SubmissionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Submission
+     */
+    select?: SubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Submission
+     */
+    omit?: SubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionInclude<ExtArgs> | null
+    /**
+     * Filter, which Submissions to fetch.
+     */
+    where?: SubmissionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Submissions to fetch.
+     */
+    orderBy?: SubmissionOrderByWithRelationInput | SubmissionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Submissions.
+     */
+    cursor?: SubmissionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Submissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Submissions.
+     */
+    skip?: number
+    distinct?: SubmissionScalarFieldEnum | SubmissionScalarFieldEnum[]
+  }
+
+  /**
+   * Submission create
+   */
+  export type SubmissionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Submission
+     */
+    select?: SubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Submission
+     */
+    omit?: SubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Submission.
+     */
+    data: XOR<SubmissionCreateInput, SubmissionUncheckedCreateInput>
+  }
+
+  /**
+   * Submission createMany
+   */
+  export type SubmissionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Submissions.
+     */
+    data: SubmissionCreateManyInput | SubmissionCreateManyInput[]
+  }
+
+  /**
+   * Submission createManyAndReturn
+   */
+  export type SubmissionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Submission
+     */
+    select?: SubmissionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Submission
+     */
+    omit?: SubmissionOmit<ExtArgs> | null
+    /**
+     * The data used to create many Submissions.
+     */
+    data: SubmissionCreateManyInput | SubmissionCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Submission update
+   */
+  export type SubmissionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Submission
+     */
+    select?: SubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Submission
+     */
+    omit?: SubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Submission.
+     */
+    data: XOR<SubmissionUpdateInput, SubmissionUncheckedUpdateInput>
+    /**
+     * Choose, which Submission to update.
+     */
+    where: SubmissionWhereUniqueInput
+  }
+
+  /**
+   * Submission updateMany
+   */
+  export type SubmissionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Submissions.
+     */
+    data: XOR<SubmissionUpdateManyMutationInput, SubmissionUncheckedUpdateManyInput>
+    /**
+     * Filter which Submissions to update
+     */
+    where?: SubmissionWhereInput
+    /**
+     * Limit how many Submissions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Submission updateManyAndReturn
+   */
+  export type SubmissionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Submission
+     */
+    select?: SubmissionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Submission
+     */
+    omit?: SubmissionOmit<ExtArgs> | null
+    /**
+     * The data used to update Submissions.
+     */
+    data: XOR<SubmissionUpdateManyMutationInput, SubmissionUncheckedUpdateManyInput>
+    /**
+     * Filter which Submissions to update
+     */
+    where?: SubmissionWhereInput
+    /**
+     * Limit how many Submissions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Submission upsert
+   */
+  export type SubmissionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Submission
+     */
+    select?: SubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Submission
+     */
+    omit?: SubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Submission to update in case it exists.
+     */
+    where: SubmissionWhereUniqueInput
+    /**
+     * In case the Submission found by the `where` argument doesn't exist, create a new Submission with this data.
+     */
+    create: XOR<SubmissionCreateInput, SubmissionUncheckedCreateInput>
+    /**
+     * In case the Submission was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SubmissionUpdateInput, SubmissionUncheckedUpdateInput>
+  }
+
+  /**
+   * Submission delete
+   */
+  export type SubmissionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Submission
+     */
+    select?: SubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Submission
+     */
+    omit?: SubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionInclude<ExtArgs> | null
+    /**
+     * Filter which Submission to delete.
+     */
+    where: SubmissionWhereUniqueInput
+  }
+
+  /**
+   * Submission deleteMany
+   */
+  export type SubmissionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Submissions to delete
+     */
+    where?: SubmissionWhereInput
+    /**
+     * Limit how many Submissions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Submission without action
+   */
+  export type SubmissionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Submission
+     */
+    select?: SubmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Submission
+     */
+    omit?: SubmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubmissionInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -3295,6 +4696,28 @@ export namespace Prisma {
   };
 
   export type ActivityScalarFieldEnum = (typeof ActivityScalarFieldEnum)[keyof typeof ActivityScalarFieldEnum]
+
+
+  export const SubmissionScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    week: 'week',
+    day: 'day',
+    overallMood: 'overallMood',
+    overallMessage: 'overallMessage',
+    totalActivities: 'totalActivities',
+    calmCount: 'calmCount',
+    neutralCount: 'neutralCount',
+    stressedCount: 'stressedCount',
+    calmPercentage: 'calmPercentage',
+    neutralPercentage: 'neutralPercentage',
+    stressedPercentage: 'stressedPercentage',
+    activitiesData: 'activitiesData',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type SubmissionScalarFieldEnum = (typeof SubmissionScalarFieldEnum)[keyof typeof SubmissionScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -3367,6 +4790,7 @@ export namespace Prisma {
     profilePicture?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     activities?: ActivityListRelationFilter
+    submissions?: SubmissionListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -3377,6 +4801,7 @@ export namespace Prisma {
     profilePicture?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     activities?: ActivityOrderByRelationAggregateInput
+    submissions?: SubmissionOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -3390,6 +4815,7 @@ export namespace Prisma {
     profilePicture?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     activities?: ActivityListRelationFilter
+    submissions?: SubmissionListRelationFilter
   }, "id" | "username" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -3495,6 +4921,119 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Activity"> | Date | string
   }
 
+  export type SubmissionWhereInput = {
+    AND?: SubmissionWhereInput | SubmissionWhereInput[]
+    OR?: SubmissionWhereInput[]
+    NOT?: SubmissionWhereInput | SubmissionWhereInput[]
+    id?: IntFilter<"Submission"> | number
+    userId?: IntFilter<"Submission"> | number
+    week?: IntFilter<"Submission"> | number
+    day?: IntFilter<"Submission"> | number
+    overallMood?: StringFilter<"Submission"> | string
+    overallMessage?: StringFilter<"Submission"> | string
+    totalActivities?: IntFilter<"Submission"> | number
+    calmCount?: IntFilter<"Submission"> | number
+    neutralCount?: IntFilter<"Submission"> | number
+    stressedCount?: IntFilter<"Submission"> | number
+    calmPercentage?: IntFilter<"Submission"> | number
+    neutralPercentage?: IntFilter<"Submission"> | number
+    stressedPercentage?: IntFilter<"Submission"> | number
+    activitiesData?: StringFilter<"Submission"> | string
+    createdAt?: DateTimeFilter<"Submission"> | Date | string
+    updatedAt?: DateTimeFilter<"Submission"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type SubmissionOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    week?: SortOrder
+    day?: SortOrder
+    overallMood?: SortOrder
+    overallMessage?: SortOrder
+    totalActivities?: SortOrder
+    calmCount?: SortOrder
+    neutralCount?: SortOrder
+    stressedCount?: SortOrder
+    calmPercentage?: SortOrder
+    neutralPercentage?: SortOrder
+    stressedPercentage?: SortOrder
+    activitiesData?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type SubmissionWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    userId_week_day?: SubmissionUserIdWeekDayCompoundUniqueInput
+    AND?: SubmissionWhereInput | SubmissionWhereInput[]
+    OR?: SubmissionWhereInput[]
+    NOT?: SubmissionWhereInput | SubmissionWhereInput[]
+    userId?: IntFilter<"Submission"> | number
+    week?: IntFilter<"Submission"> | number
+    day?: IntFilter<"Submission"> | number
+    overallMood?: StringFilter<"Submission"> | string
+    overallMessage?: StringFilter<"Submission"> | string
+    totalActivities?: IntFilter<"Submission"> | number
+    calmCount?: IntFilter<"Submission"> | number
+    neutralCount?: IntFilter<"Submission"> | number
+    stressedCount?: IntFilter<"Submission"> | number
+    calmPercentage?: IntFilter<"Submission"> | number
+    neutralPercentage?: IntFilter<"Submission"> | number
+    stressedPercentage?: IntFilter<"Submission"> | number
+    activitiesData?: StringFilter<"Submission"> | string
+    createdAt?: DateTimeFilter<"Submission"> | Date | string
+    updatedAt?: DateTimeFilter<"Submission"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "userId_week_day">
+
+  export type SubmissionOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    week?: SortOrder
+    day?: SortOrder
+    overallMood?: SortOrder
+    overallMessage?: SortOrder
+    totalActivities?: SortOrder
+    calmCount?: SortOrder
+    neutralCount?: SortOrder
+    stressedCount?: SortOrder
+    calmPercentage?: SortOrder
+    neutralPercentage?: SortOrder
+    stressedPercentage?: SortOrder
+    activitiesData?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: SubmissionCountOrderByAggregateInput
+    _avg?: SubmissionAvgOrderByAggregateInput
+    _max?: SubmissionMaxOrderByAggregateInput
+    _min?: SubmissionMinOrderByAggregateInput
+    _sum?: SubmissionSumOrderByAggregateInput
+  }
+
+  export type SubmissionScalarWhereWithAggregatesInput = {
+    AND?: SubmissionScalarWhereWithAggregatesInput | SubmissionScalarWhereWithAggregatesInput[]
+    OR?: SubmissionScalarWhereWithAggregatesInput[]
+    NOT?: SubmissionScalarWhereWithAggregatesInput | SubmissionScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Submission"> | number
+    userId?: IntWithAggregatesFilter<"Submission"> | number
+    week?: IntWithAggregatesFilter<"Submission"> | number
+    day?: IntWithAggregatesFilter<"Submission"> | number
+    overallMood?: StringWithAggregatesFilter<"Submission"> | string
+    overallMessage?: StringWithAggregatesFilter<"Submission"> | string
+    totalActivities?: IntWithAggregatesFilter<"Submission"> | number
+    calmCount?: IntWithAggregatesFilter<"Submission"> | number
+    neutralCount?: IntWithAggregatesFilter<"Submission"> | number
+    stressedCount?: IntWithAggregatesFilter<"Submission"> | number
+    calmPercentage?: IntWithAggregatesFilter<"Submission"> | number
+    neutralPercentage?: IntWithAggregatesFilter<"Submission"> | number
+    stressedPercentage?: IntWithAggregatesFilter<"Submission"> | number
+    activitiesData?: StringWithAggregatesFilter<"Submission"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Submission"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Submission"> | Date | string
+  }
+
   export type UserCreateInput = {
     username: string
     email: string
@@ -3502,6 +5041,7 @@ export namespace Prisma {
     profilePicture?: string | null
     createdAt?: Date | string
     activities?: ActivityCreateNestedManyWithoutUserInput
+    submissions?: SubmissionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -3512,6 +5052,7 @@ export namespace Prisma {
     profilePicture?: string | null
     createdAt?: Date | string
     activities?: ActivityUncheckedCreateNestedManyWithoutUserInput
+    submissions?: SubmissionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -3521,6 +5062,7 @@ export namespace Prisma {
     profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     activities?: ActivityUpdateManyWithoutUserNestedInput
+    submissions?: SubmissionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -3531,6 +5073,7 @@ export namespace Prisma {
     profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     activities?: ActivityUncheckedUpdateManyWithoutUserNestedInput
+    submissions?: SubmissionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -3639,6 +5182,135 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type SubmissionCreateInput = {
+    week: number
+    day: number
+    overallMood: string
+    overallMessage: string
+    totalActivities: number
+    calmCount: number
+    neutralCount: number
+    stressedCount: number
+    calmPercentage: number
+    neutralPercentage: number
+    stressedPercentage: number
+    activitiesData: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutSubmissionsInput
+  }
+
+  export type SubmissionUncheckedCreateInput = {
+    id?: number
+    userId: number
+    week: number
+    day: number
+    overallMood: string
+    overallMessage: string
+    totalActivities: number
+    calmCount: number
+    neutralCount: number
+    stressedCount: number
+    calmPercentage: number
+    neutralPercentage: number
+    stressedPercentage: number
+    activitiesData: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SubmissionUpdateInput = {
+    week?: IntFieldUpdateOperationsInput | number
+    day?: IntFieldUpdateOperationsInput | number
+    overallMood?: StringFieldUpdateOperationsInput | string
+    overallMessage?: StringFieldUpdateOperationsInput | string
+    totalActivities?: IntFieldUpdateOperationsInput | number
+    calmCount?: IntFieldUpdateOperationsInput | number
+    neutralCount?: IntFieldUpdateOperationsInput | number
+    stressedCount?: IntFieldUpdateOperationsInput | number
+    calmPercentage?: IntFieldUpdateOperationsInput | number
+    neutralPercentage?: IntFieldUpdateOperationsInput | number
+    stressedPercentage?: IntFieldUpdateOperationsInput | number
+    activitiesData?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutSubmissionsNestedInput
+  }
+
+  export type SubmissionUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+    week?: IntFieldUpdateOperationsInput | number
+    day?: IntFieldUpdateOperationsInput | number
+    overallMood?: StringFieldUpdateOperationsInput | string
+    overallMessage?: StringFieldUpdateOperationsInput | string
+    totalActivities?: IntFieldUpdateOperationsInput | number
+    calmCount?: IntFieldUpdateOperationsInput | number
+    neutralCount?: IntFieldUpdateOperationsInput | number
+    stressedCount?: IntFieldUpdateOperationsInput | number
+    calmPercentage?: IntFieldUpdateOperationsInput | number
+    neutralPercentage?: IntFieldUpdateOperationsInput | number
+    stressedPercentage?: IntFieldUpdateOperationsInput | number
+    activitiesData?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubmissionCreateManyInput = {
+    id?: number
+    userId: number
+    week: number
+    day: number
+    overallMood: string
+    overallMessage: string
+    totalActivities: number
+    calmCount: number
+    neutralCount: number
+    stressedCount: number
+    calmPercentage: number
+    neutralPercentage: number
+    stressedPercentage: number
+    activitiesData: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SubmissionUpdateManyMutationInput = {
+    week?: IntFieldUpdateOperationsInput | number
+    day?: IntFieldUpdateOperationsInput | number
+    overallMood?: StringFieldUpdateOperationsInput | string
+    overallMessage?: StringFieldUpdateOperationsInput | string
+    totalActivities?: IntFieldUpdateOperationsInput | number
+    calmCount?: IntFieldUpdateOperationsInput | number
+    neutralCount?: IntFieldUpdateOperationsInput | number
+    stressedCount?: IntFieldUpdateOperationsInput | number
+    calmPercentage?: IntFieldUpdateOperationsInput | number
+    neutralPercentage?: IntFieldUpdateOperationsInput | number
+    stressedPercentage?: IntFieldUpdateOperationsInput | number
+    activitiesData?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubmissionUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+    week?: IntFieldUpdateOperationsInput | number
+    day?: IntFieldUpdateOperationsInput | number
+    overallMood?: StringFieldUpdateOperationsInput | string
+    overallMessage?: StringFieldUpdateOperationsInput | string
+    totalActivities?: IntFieldUpdateOperationsInput | number
+    calmCount?: IntFieldUpdateOperationsInput | number
+    neutralCount?: IntFieldUpdateOperationsInput | number
+    stressedCount?: IntFieldUpdateOperationsInput | number
+    calmPercentage?: IntFieldUpdateOperationsInput | number
+    neutralPercentage?: IntFieldUpdateOperationsInput | number
+    stressedPercentage?: IntFieldUpdateOperationsInput | number
+    activitiesData?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[]
@@ -3695,12 +5367,22 @@ export namespace Prisma {
     none?: ActivityWhereInput
   }
 
+  export type SubmissionListRelationFilter = {
+    every?: SubmissionWhereInput
+    some?: SubmissionWhereInput
+    none?: SubmissionWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
   }
 
   export type ActivityOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SubmissionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -3871,6 +5553,97 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
+  export type SubmissionUserIdWeekDayCompoundUniqueInput = {
+    userId: number
+    week: number
+    day: number
+  }
+
+  export type SubmissionCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    week?: SortOrder
+    day?: SortOrder
+    overallMood?: SortOrder
+    overallMessage?: SortOrder
+    totalActivities?: SortOrder
+    calmCount?: SortOrder
+    neutralCount?: SortOrder
+    stressedCount?: SortOrder
+    calmPercentage?: SortOrder
+    neutralPercentage?: SortOrder
+    stressedPercentage?: SortOrder
+    activitiesData?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SubmissionAvgOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    week?: SortOrder
+    day?: SortOrder
+    totalActivities?: SortOrder
+    calmCount?: SortOrder
+    neutralCount?: SortOrder
+    stressedCount?: SortOrder
+    calmPercentage?: SortOrder
+    neutralPercentage?: SortOrder
+    stressedPercentage?: SortOrder
+  }
+
+  export type SubmissionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    week?: SortOrder
+    day?: SortOrder
+    overallMood?: SortOrder
+    overallMessage?: SortOrder
+    totalActivities?: SortOrder
+    calmCount?: SortOrder
+    neutralCount?: SortOrder
+    stressedCount?: SortOrder
+    calmPercentage?: SortOrder
+    neutralPercentage?: SortOrder
+    stressedPercentage?: SortOrder
+    activitiesData?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SubmissionMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    week?: SortOrder
+    day?: SortOrder
+    overallMood?: SortOrder
+    overallMessage?: SortOrder
+    totalActivities?: SortOrder
+    calmCount?: SortOrder
+    neutralCount?: SortOrder
+    stressedCount?: SortOrder
+    calmPercentage?: SortOrder
+    neutralPercentage?: SortOrder
+    stressedPercentage?: SortOrder
+    activitiesData?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SubmissionSumOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    week?: SortOrder
+    day?: SortOrder
+    totalActivities?: SortOrder
+    calmCount?: SortOrder
+    neutralCount?: SortOrder
+    stressedCount?: SortOrder
+    calmPercentage?: SortOrder
+    neutralPercentage?: SortOrder
+    stressedPercentage?: SortOrder
+  }
+
   export type ActivityCreateNestedManyWithoutUserInput = {
     create?: XOR<ActivityCreateWithoutUserInput, ActivityUncheckedCreateWithoutUserInput> | ActivityCreateWithoutUserInput[] | ActivityUncheckedCreateWithoutUserInput[]
     connectOrCreate?: ActivityCreateOrConnectWithoutUserInput | ActivityCreateOrConnectWithoutUserInput[]
@@ -3878,11 +5651,25 @@ export namespace Prisma {
     connect?: ActivityWhereUniqueInput | ActivityWhereUniqueInput[]
   }
 
+  export type SubmissionCreateNestedManyWithoutUserInput = {
+    create?: XOR<SubmissionCreateWithoutUserInput, SubmissionUncheckedCreateWithoutUserInput> | SubmissionCreateWithoutUserInput[] | SubmissionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SubmissionCreateOrConnectWithoutUserInput | SubmissionCreateOrConnectWithoutUserInput[]
+    createMany?: SubmissionCreateManyUserInputEnvelope
+    connect?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+  }
+
   export type ActivityUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<ActivityCreateWithoutUserInput, ActivityUncheckedCreateWithoutUserInput> | ActivityCreateWithoutUserInput[] | ActivityUncheckedCreateWithoutUserInput[]
     connectOrCreate?: ActivityCreateOrConnectWithoutUserInput | ActivityCreateOrConnectWithoutUserInput[]
     createMany?: ActivityCreateManyUserInputEnvelope
     connect?: ActivityWhereUniqueInput | ActivityWhereUniqueInput[]
+  }
+
+  export type SubmissionUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<SubmissionCreateWithoutUserInput, SubmissionUncheckedCreateWithoutUserInput> | SubmissionCreateWithoutUserInput[] | SubmissionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SubmissionCreateOrConnectWithoutUserInput | SubmissionCreateOrConnectWithoutUserInput[]
+    createMany?: SubmissionCreateManyUserInputEnvelope
+    connect?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -3911,6 +5698,20 @@ export namespace Prisma {
     deleteMany?: ActivityScalarWhereInput | ActivityScalarWhereInput[]
   }
 
+  export type SubmissionUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SubmissionCreateWithoutUserInput, SubmissionUncheckedCreateWithoutUserInput> | SubmissionCreateWithoutUserInput[] | SubmissionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SubmissionCreateOrConnectWithoutUserInput | SubmissionCreateOrConnectWithoutUserInput[]
+    upsert?: SubmissionUpsertWithWhereUniqueWithoutUserInput | SubmissionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SubmissionCreateManyUserInputEnvelope
+    set?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+    disconnect?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+    delete?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+    connect?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+    update?: SubmissionUpdateWithWhereUniqueWithoutUserInput | SubmissionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SubmissionUpdateManyWithWhereWithoutUserInput | SubmissionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SubmissionScalarWhereInput | SubmissionScalarWhereInput[]
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -3933,6 +5734,20 @@ export namespace Prisma {
     deleteMany?: ActivityScalarWhereInput | ActivityScalarWhereInput[]
   }
 
+  export type SubmissionUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SubmissionCreateWithoutUserInput, SubmissionUncheckedCreateWithoutUserInput> | SubmissionCreateWithoutUserInput[] | SubmissionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SubmissionCreateOrConnectWithoutUserInput | SubmissionCreateOrConnectWithoutUserInput[]
+    upsert?: SubmissionUpsertWithWhereUniqueWithoutUserInput | SubmissionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SubmissionCreateManyUserInputEnvelope
+    set?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+    disconnect?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+    delete?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+    connect?: SubmissionWhereUniqueInput | SubmissionWhereUniqueInput[]
+    update?: SubmissionUpdateWithWhereUniqueWithoutUserInput | SubmissionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SubmissionUpdateManyWithWhereWithoutUserInput | SubmissionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SubmissionScalarWhereInput | SubmissionScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutActivitiesInput = {
     create?: XOR<UserCreateWithoutActivitiesInput, UserUncheckedCreateWithoutActivitiesInput>
     connectOrCreate?: UserCreateOrConnectWithoutActivitiesInput
@@ -3949,6 +5764,20 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutActivitiesInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutActivitiesInput, UserUpdateWithoutActivitiesInput>, UserUncheckedUpdateWithoutActivitiesInput>
+  }
+
+  export type UserCreateNestedOneWithoutSubmissionsInput = {
+    create?: XOR<UserCreateWithoutSubmissionsInput, UserUncheckedCreateWithoutSubmissionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSubmissionsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutSubmissionsNestedInput = {
+    create?: XOR<UserCreateWithoutSubmissionsInput, UserUncheckedCreateWithoutSubmissionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSubmissionsInput
+    upsert?: UserUpsertWithoutSubmissionsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSubmissionsInput, UserUpdateWithoutSubmissionsInput>, UserUncheckedUpdateWithoutSubmissionsInput>
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -4130,6 +5959,50 @@ export namespace Prisma {
     data: ActivityCreateManyUserInput | ActivityCreateManyUserInput[]
   }
 
+  export type SubmissionCreateWithoutUserInput = {
+    week: number
+    day: number
+    overallMood: string
+    overallMessage: string
+    totalActivities: number
+    calmCount: number
+    neutralCount: number
+    stressedCount: number
+    calmPercentage: number
+    neutralPercentage: number
+    stressedPercentage: number
+    activitiesData: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SubmissionUncheckedCreateWithoutUserInput = {
+    id?: number
+    week: number
+    day: number
+    overallMood: string
+    overallMessage: string
+    totalActivities: number
+    calmCount: number
+    neutralCount: number
+    stressedCount: number
+    calmPercentage: number
+    neutralPercentage: number
+    stressedPercentage: number
+    activitiesData: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SubmissionCreateOrConnectWithoutUserInput = {
+    where: SubmissionWhereUniqueInput
+    create: XOR<SubmissionCreateWithoutUserInput, SubmissionUncheckedCreateWithoutUserInput>
+  }
+
+  export type SubmissionCreateManyUserInputEnvelope = {
+    data: SubmissionCreateManyUserInput | SubmissionCreateManyUserInput[]
+  }
+
   export type ActivityUpsertWithWhereUniqueWithoutUserInput = {
     where: ActivityWhereUniqueInput
     update: XOR<ActivityUpdateWithoutUserInput, ActivityUncheckedUpdateWithoutUserInput>
@@ -4161,12 +6034,51 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Activity"> | Date | string
   }
 
+  export type SubmissionUpsertWithWhereUniqueWithoutUserInput = {
+    where: SubmissionWhereUniqueInput
+    update: XOR<SubmissionUpdateWithoutUserInput, SubmissionUncheckedUpdateWithoutUserInput>
+    create: XOR<SubmissionCreateWithoutUserInput, SubmissionUncheckedCreateWithoutUserInput>
+  }
+
+  export type SubmissionUpdateWithWhereUniqueWithoutUserInput = {
+    where: SubmissionWhereUniqueInput
+    data: XOR<SubmissionUpdateWithoutUserInput, SubmissionUncheckedUpdateWithoutUserInput>
+  }
+
+  export type SubmissionUpdateManyWithWhereWithoutUserInput = {
+    where: SubmissionScalarWhereInput
+    data: XOR<SubmissionUpdateManyMutationInput, SubmissionUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type SubmissionScalarWhereInput = {
+    AND?: SubmissionScalarWhereInput | SubmissionScalarWhereInput[]
+    OR?: SubmissionScalarWhereInput[]
+    NOT?: SubmissionScalarWhereInput | SubmissionScalarWhereInput[]
+    id?: IntFilter<"Submission"> | number
+    userId?: IntFilter<"Submission"> | number
+    week?: IntFilter<"Submission"> | number
+    day?: IntFilter<"Submission"> | number
+    overallMood?: StringFilter<"Submission"> | string
+    overallMessage?: StringFilter<"Submission"> | string
+    totalActivities?: IntFilter<"Submission"> | number
+    calmCount?: IntFilter<"Submission"> | number
+    neutralCount?: IntFilter<"Submission"> | number
+    stressedCount?: IntFilter<"Submission"> | number
+    calmPercentage?: IntFilter<"Submission"> | number
+    neutralPercentage?: IntFilter<"Submission"> | number
+    stressedPercentage?: IntFilter<"Submission"> | number
+    activitiesData?: StringFilter<"Submission"> | string
+    createdAt?: DateTimeFilter<"Submission"> | Date | string
+    updatedAt?: DateTimeFilter<"Submission"> | Date | string
+  }
+
   export type UserCreateWithoutActivitiesInput = {
     username: string
     email: string
     password: string
     profilePicture?: string | null
     createdAt?: Date | string
+    submissions?: SubmissionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutActivitiesInput = {
@@ -4176,6 +6088,7 @@ export namespace Prisma {
     password: string
     profilePicture?: string | null
     createdAt?: Date | string
+    submissions?: SubmissionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutActivitiesInput = {
@@ -4200,6 +6113,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submissions?: SubmissionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutActivitiesInput = {
@@ -4209,6 +6123,61 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    submissions?: SubmissionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutSubmissionsInput = {
+    username: string
+    email: string
+    password: string
+    profilePicture?: string | null
+    createdAt?: Date | string
+    activities?: ActivityCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutSubmissionsInput = {
+    id?: number
+    username: string
+    email: string
+    password: string
+    profilePicture?: string | null
+    createdAt?: Date | string
+    activities?: ActivityUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutSubmissionsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSubmissionsInput, UserUncheckedCreateWithoutSubmissionsInput>
+  }
+
+  export type UserUpsertWithoutSubmissionsInput = {
+    update: XOR<UserUpdateWithoutSubmissionsInput, UserUncheckedUpdateWithoutSubmissionsInput>
+    create: XOR<UserCreateWithoutSubmissionsInput, UserUncheckedCreateWithoutSubmissionsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSubmissionsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSubmissionsInput, UserUncheckedUpdateWithoutSubmissionsInput>
+  }
+
+  export type UserUpdateWithoutSubmissionsInput = {
+    username?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    activities?: ActivityUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSubmissionsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    username?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    activities?: ActivityUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ActivityCreateManyUserInput = {
@@ -4218,6 +6187,24 @@ export namespace Prisma {
     completed?: boolean
     week: number
     day: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SubmissionCreateManyUserInput = {
+    id?: number
+    week: number
+    day: number
+    overallMood: string
+    overallMessage: string
+    totalActivities: number
+    calmCount: number
+    neutralCount: number
+    stressedCount: number
+    calmPercentage: number
+    neutralPercentage: number
+    stressedPercentage: number
+    activitiesData: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -4250,6 +6237,59 @@ export namespace Prisma {
     completed?: BoolFieldUpdateOperationsInput | boolean
     week?: IntFieldUpdateOperationsInput | number
     day?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubmissionUpdateWithoutUserInput = {
+    week?: IntFieldUpdateOperationsInput | number
+    day?: IntFieldUpdateOperationsInput | number
+    overallMood?: StringFieldUpdateOperationsInput | string
+    overallMessage?: StringFieldUpdateOperationsInput | string
+    totalActivities?: IntFieldUpdateOperationsInput | number
+    calmCount?: IntFieldUpdateOperationsInput | number
+    neutralCount?: IntFieldUpdateOperationsInput | number
+    stressedCount?: IntFieldUpdateOperationsInput | number
+    calmPercentage?: IntFieldUpdateOperationsInput | number
+    neutralPercentage?: IntFieldUpdateOperationsInput | number
+    stressedPercentage?: IntFieldUpdateOperationsInput | number
+    activitiesData?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubmissionUncheckedUpdateWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    week?: IntFieldUpdateOperationsInput | number
+    day?: IntFieldUpdateOperationsInput | number
+    overallMood?: StringFieldUpdateOperationsInput | string
+    overallMessage?: StringFieldUpdateOperationsInput | string
+    totalActivities?: IntFieldUpdateOperationsInput | number
+    calmCount?: IntFieldUpdateOperationsInput | number
+    neutralCount?: IntFieldUpdateOperationsInput | number
+    stressedCount?: IntFieldUpdateOperationsInput | number
+    calmPercentage?: IntFieldUpdateOperationsInput | number
+    neutralPercentage?: IntFieldUpdateOperationsInput | number
+    stressedPercentage?: IntFieldUpdateOperationsInput | number
+    activitiesData?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubmissionUncheckedUpdateManyWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    week?: IntFieldUpdateOperationsInput | number
+    day?: IntFieldUpdateOperationsInput | number
+    overallMood?: StringFieldUpdateOperationsInput | string
+    overallMessage?: StringFieldUpdateOperationsInput | string
+    totalActivities?: IntFieldUpdateOperationsInput | number
+    calmCount?: IntFieldUpdateOperationsInput | number
+    neutralCount?: IntFieldUpdateOperationsInput | number
+    stressedCount?: IntFieldUpdateOperationsInput | number
+    calmPercentage?: IntFieldUpdateOperationsInput | number
+    neutralPercentage?: IntFieldUpdateOperationsInput | number
+    stressedPercentage?: IntFieldUpdateOperationsInput | number
+    activitiesData?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
