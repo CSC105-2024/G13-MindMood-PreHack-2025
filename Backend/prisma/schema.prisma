@@ -9,12 +9,28 @@ datasource db {
 }
 
 model User {
-  id              Int         @id @default(autoincrement())
-  username        String      @unique
-  email           String      @unique
-  password        String
-  profilePicture  String?     
-  createdAt       DateTime    @default(now())
+  id             Int        @id @default(autoincrement())
+  username       String     @unique
+  email          String     @unique
+  password       String
+  profilePicture String?
+  createdAt      DateTime   @default(now())
+  activities     Activity[]
+}
+
+model Activity {
+  id        Int      @id @default(autoincrement())
+  name      String
+  mood      String   @default("Neutral") // "Calm", "Neutral", "Stressed"
+  completed Boolean  @default(false)
+  week      Int
+  day       Int
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, week, day])
 }
 
 
