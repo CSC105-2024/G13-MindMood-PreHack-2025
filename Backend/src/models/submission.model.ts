@@ -75,4 +75,14 @@ export class SubmissionModel {
       },
     });
   }
+
+  // Clear all submissions for a user
+  static async clearAllByUser(userId: number) {
+    const result = await prisma.submission.deleteMany({
+      where: {
+        userId,
+      },
+    });
+    return result.count;
+  }
 }

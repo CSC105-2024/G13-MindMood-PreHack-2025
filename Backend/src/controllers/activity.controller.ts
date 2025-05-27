@@ -165,6 +165,75 @@ export class ActivityController {
     }
   }
 
+  // Clear all activities for a specific day
+  static async clearDay(c: Context) {
+    try {
+      const userId = await verifyAuth(c);
+      if (!userId) {
+        return c.json({ error: 'Unauthorized' }, 401);
+      }
+
+      const { week, day } = await c.req.json();
+
+      if (week === undefined || day === undefined) {
+        return c.json({ error: 'Week and day are required' }, 400);
+      }
+
+      if (week < 1 || week > 4 || day < 1 || day > 7) {
+        return c.json({ error: 'Invalid week (1-4) or day (1-7)' }, 400);
+      }
+
+      // First, check if there's a submission for this day and delete it
+      const submission = await SubmissionModel.findByUserAndDate(userId, week, day);
+      if (submission) {
+        await SubmissionModel.delete(submission.id, userId);
+      }
+
+      // Then delete all activities for this day
+      const deletedCount = await ActivityModel.clearByUserAndDate(userId, week, day);
+
+      return c.json({ 
+        message: `Cleared ${deletedCount} activities for Week ${week}, Day ${day}`,
+        deletedActivities: deletedCount,
+        submissionCleared: !!submission
+      });
+    } catch (error) {
+      console.error('Clear day error:', error);
+      return c.json({ 
+        error: 'Internal server error',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      }, 500);
+    }
+  }
+
+  // Clear all submissions and activities for a user
+  static async clearAll(c: Context) {
+    try {
+      const userId = await verifyAuth(c);
+      if (!userId) {
+        return c.json({ error: 'Unauthorized' }, 401);
+      }
+
+      // Delete all submissions first
+      const deletedSubmissions = await SubmissionModel.clearAllByUser(userId);
+      
+      // Then delete all activities
+      const deletedActivities = await ActivityModel.clearAllByUser(userId);
+
+      return c.json({ 
+        message: 'All activities and submissions cleared successfully',
+        deletedActivities,
+        deletedSubmissions
+      });
+    } catch (error) {
+      console.error('Clear all error:', error);
+      return c.json({ 
+        error: 'Internal server error',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      }, 500);
+    }
+  }
+
   // Submit day and generate mood summary
   static async submitDay(c: Context) {
     try {

@@ -3,28 +3,34 @@ import { ActivityController } from '../controllers/activity.controller.js';
 
 const activityRoutes = new Hono();
 
-// POST /activities - Create new activity
+// Create new activity
 activityRoutes.post('/', ActivityController.create);
 
-// GET /activities - Get activities by week and day
+// Get activities by date
 activityRoutes.get('/', ActivityController.getByDate);
 
-// GET /activities/all - Get all activities for user
+// Get all activities
 activityRoutes.get('/all', ActivityController.getAll);
 
-// PUT /activities/:id - Update activity
+// Update activity
 activityRoutes.put('/:id', ActivityController.update);
 
-// DELETE /activities/:id - Delete activity
+// Delete activity
 activityRoutes.delete('/:id', ActivityController.delete);
 
-// POST /activities/submit - Submit day and generate mood summary
+// Submit day
 activityRoutes.post('/submit', ActivityController.submitDay);
 
-// GET /activities/submission - Get submission by date
+// Get submission by date
 activityRoutes.get('/submission', ActivityController.getSubmission);
 
-// GET /activities/submissions/all - Get all submissions for user
+// Get all submissions
 activityRoutes.get('/submissions/all', ActivityController.getAllSubmissions);
+
+// Clear all activities for a specific day
+activityRoutes.post('/clear-day', ActivityController.clearDay);
+
+// Clear all activities and submissions for user
+activityRoutes.post('/clear-all', ActivityController.clearAll);
 
 export default activityRoutes;

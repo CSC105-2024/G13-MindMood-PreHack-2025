@@ -78,4 +78,26 @@ export class ActivityModel {
       ],
     });
   }
+
+  // Clear all activities for a specific day
+  static async clearByUserAndDate(userId: number, week: number, day: number) {
+    const result = await prisma.activity.deleteMany({
+      where: {
+        userId,
+        week,
+        day,
+      },
+    });
+    return result.count;
+  }
+
+  // Clear all activities for a user
+  static async clearAllByUser(userId: number) {
+    const result = await prisma.activity.deleteMany({
+      where: {
+        userId,
+      },
+    });
+    return result.count;
+  }
 }

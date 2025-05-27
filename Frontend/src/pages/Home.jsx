@@ -34,6 +34,10 @@ const Home = () => {
   const [moodSummary, setMoodSummary] = useState(null);
   const [daySubmitted, setDaySubmitted] = useState(false);
 
+  // Clear modal states
+  const [showClearModal, setShowClearModal] = useState(false);
+  const [clearType, setClearType] = useState(''); // 'day' or 'all'
+
   // Fetch activities when week or day changes
   useEffect(() => {
     fetchActivities();
@@ -61,11 +65,15 @@ const Home = () => {
   // Check if current day has been submitted
   const checkDaySubmissionStatus = async () => {
     try {
-      // You might want to add this endpoint to check submission status
-      // For now, we'll check when user tries to submit
-      setDaySubmitted(false);
+      const response = await axios.get(`/api/activities/submission?week=${week}&day=${day}`);
+      setDaySubmitted(!!response.data.submission);
     } catch (err) {
-      console.error('Error checking submission status:', err);
+      // If 404, day hasn't been submitted yet
+      if (err.response?.status === 404) {
+        setDaySubmitted(false);
+      } else {
+        console.error('Error checking submission status:', err);
+      }
     }
   };
 
@@ -289,6 +297,93 @@ const Home = () => {
     }
   };
 
+  // Clear functions
+  const confirmClearDay = () => {
+    setClearType('day');
+    setShowClearModal(true);
+  };
+
+  const confirmClearAll = () => {
+    setClearType('all');
+    setShowClearModal(true);
+  };
+
+  const handleClearDay = async () => {
+    try {
+      setLoading(true);
+      setError('');
+      
+      const response = await axios.post('/api/activities/clear-day', {
+        week,
+        day
+      });
+
+      if (response.data) {
+        // Refresh activities list
+        setActivities([]);
+        setDaySubmitted(false);
+        setShowMoodSummary(false);
+        setMoodSummary(null);
+        
+        // Show success message
+        const message = `Cleared ${response.data.deletedActivities} activities for Week ${week}, Day ${day}`;
+        if (response.data.submissionCleared) {
+          setError(`${message} and removed submission.`);
+        } else {
+          setError(message);
+        }
+        
+        // Clear error after 3 seconds to show as success message
+        setTimeout(() => setError(''), 3000);
+      }
+      
+      setShowClearModal(false);
+    } catch (err) {
+      console.error('Error clearing day:', err);
+      setError('Failed to clear day activities');
+      setShowClearModal(false);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleClearAll = async () => {
+    try {
+      setLoading(true);
+      setError('');
+      
+      const response = await axios.post('/api/activities/clear-all');
+
+      if (response.data) {
+        // Clear current activities
+        setActivities([]);
+        setDaySubmitted(false);
+        setShowMoodSummary(false);
+        setMoodSummary(null);
+        
+        // Show success message
+        const message = `Cleared ${response.data.deletedActivities} activities and ${response.data.deletedSubmissions} submissions.`;
+        setError(message);
+        
+        // Clear error after 3 seconds to show as success message
+        setTimeout(() => setError(''), 3000);
+      }
+      
+      setShowClearModal(false);
+    } catch (err) {
+      console.error('Error clearing all:', err);
+      setError('Failed to clear all activities');
+      setShowClearModal(false);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCancelClear = () => {
+    setShowClearModal(false);
+    setClearType('');
+  };
+
   // Close mood selector when clicking outside
   useEffect(() => {
     const handleClickOutside = () => {
@@ -388,6 +483,39 @@ const Home = () => {
           </div>
         )}
 
+        {/* Clear Confirmation Modal */}
+        {showClearModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded-md shadow-md w-96">
+              <h2 className="text-lg font-semibold mb-4">
+                {clearType === 'day' ? 'Clear Current Day?' : 'Clear All Data?'}
+              </h2>
+              <p className="mb-6 text-gray-600">
+                {clearType === 'day' 
+                  ? `Are you sure you want to clear all activities and submission for Week ${week}, Day ${day}? This action cannot be undone.`
+                  : 'Are you sure you want to clear ALL activities and submissions? This will delete everything and cannot be undone.'
+                }
+              </p>
+              <div className="flex justify-end space-x-4">
+                <button 
+                  className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300 disabled:opacity-50" 
+                  onClick={handleCancelClear}
+                  disabled={loading}
+                >
+                  Cancel
+                </button>
+                <button 
+                  className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 disabled:opacity-50" 
+                  onClick={clearType === 'day' ? handleClearDay : handleClearAll}
+                  disabled={loading}
+                >
+                  {loading ? 'Clearing...' : 'Clear'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center space-x-2">
             <span className="text-lg font-medium">Week {week}</span>
@@ -425,13 +553,31 @@ const Home = () => {
             </button>
           </div>
 
-          <button 
-            className="px-4 py-2 rounded-md text-white bg-[#e38b29] hover:brightness-110 disabled:opacity-50" 
-            onClick={handleSubmitDay}
-            disabled={loading || daySubmitted}
-          >
-            {daySubmitted ? 'Submitted' : 'Submit Day'}
-          </button>
+          <div className="flex items-center space-x-2">
+            <button 
+              className="px-3 py-2 rounded-md text-white bg-red-500 hover:bg-red-600 disabled:opacity-50 text-sm" 
+              onClick={confirmClearDay}
+              disabled={loading || activities.length === 0}
+              title="Clear current day"
+            >
+              Clear Day
+            </button>
+            <button 
+              className="px-3 py-2 rounded-md text-white bg-red-600 hover:bg-red-700 disabled:opacity-50 text-sm" 
+              onClick={confirmClearAll}
+              disabled={loading}
+              title="Clear all data"
+            >
+              Clear All
+            </button>
+            <button 
+              className="px-4 py-2 rounded-md text-white bg-[#e38b29] hover:brightness-110 disabled:opacity-50" 
+              onClick={handleSubmitDay}
+              disabled={loading || daySubmitted}
+            >
+              {daySubmitted ? 'Submitted' : 'Submit Day'}
+            </button>
+          </div>
         </div>
 
         {/* Progress indicator */}
