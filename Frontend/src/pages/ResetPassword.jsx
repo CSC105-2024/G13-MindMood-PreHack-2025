@@ -2,16 +2,30 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
-
+import { resetPasswordSchema } from '../utils/validationSchemas'; // adjust the path if needed
+import { z } from 'zod';
+ 
 const ResetPassword = () => {
   const navigate = useNavigate();
   const { token } = useParams();
-
+ 
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-
+  const [error, setError] = useState('');
+ 
   const handleSubmit = (e) => {
     e.preventDefault();
+ 
+    // Validate with Zod
+    const result = resetPasswordSchema.safeParse({ password });
+    if (!result.success) {
+      const errorMessage = result.error.errors[0]?.message || 'Invalid input';
+      setError(errorMessage);
+      return;
+    }
+ 
+    setError(''); // Clear errors if validation passes
+ 
     axios
       .post(`http://localhost:3000/auth/reset-password/${token}`, {
         password,
@@ -26,7 +40,7 @@ const ResetPassword = () => {
         console.log(err);
       });
   };
-
+ 
   return (
     <div className="flex justify-center items-center min-h-screen bg-amber-50">
       <div className="bg-white p-8 rounded-md shadow-md w-full max-w-sm border border-amber-300">
@@ -52,8 +66,9 @@ const ResetPassword = () => {
                 {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
               </span>
             </div>
+            {error && <p className="text-red-600 text-sm mt-1">{error}</p>}
           </div>
-
+ 
           <button
             type="submit"
             className="w-full bg-amber-400 text-gray-800 py-2 rounded hover:bg-amber-500 transition-colors"
@@ -65,5 +80,5 @@ const ResetPassword = () => {
     </div>
   );
 };
-
+ 
 export default ResetPassword;
