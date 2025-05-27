@@ -314,7 +314,7 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-amber-50">
       <Navbar />
-      <main className="max-w-4xl mx-auto p-6">
+      <main className="max-w-4xl mx-auto p-4 sm:p-6">
         {/* Error message */}
         {error && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
@@ -324,22 +324,22 @@ const Home = () => {
 
         {/* Mood Summary Modal */}
         {showMoodSummary && moodSummary && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white p-8 rounded-lg shadow-lg w-96 max-w-md">
-              <h2 className="text-2xl font-bold mb-6 text-center">Day Summary</h2>
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white p-6 sm:p-8 rounded-lg shadow-lg w-full max-w-md">
+              <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-center">Day Summary</h2>
               
-              <div className="text-center mb-6">
-                <div className="text-lg font-semibold mb-2">Week {moodSummary.week}, Day {moodSummary.day}</div>
-                <div className="text-3xl mb-2">
+              <div className="text-center mb-4 sm:mb-6">
+                <div className="text-base sm:text-lg font-semibold mb-2">Week {moodSummary.week}, Day {moodSummary.day}</div>
+                <div className="text-2xl sm:text-3xl mb-2">
                   {moodSummary.overallMood === 'Calm' && '😌'}
                   {moodSummary.overallMood === 'Neutral' && '😐'}
                   {moodSummary.overallMood === 'Stressed' && '😰'}
                 </div>
-                <div className="text-xl font-semibold text-gray-700">{moodSummary.overallMood}</div>
-                <div className="text-gray-600 mt-2">{moodSummary.overallMessage}</div>
+                <div className="text-lg sm:text-xl font-semibold text-gray-700">{moodSummary.overallMood}</div>
+                <div className="text-sm sm:text-base text-gray-600 mt-2">{moodSummary.overallMessage}</div>
               </div>
 
-              <div className="space-y-3 mb-6">
+              <div className="space-y-3 mb-4 sm:mb-6">
                 <div className="flex items-center justify-between">
                   <span className="flex items-center">
                     <div className="w-4 h-4 bg-green-400 rounded mr-2"></div>
@@ -363,11 +363,11 @@ const Home = () => {
                 </div>
               </div>
 
-              <div className="text-center text-sm text-gray-600 mb-6">
+              <div className="text-center text-sm text-gray-600 mb-4 sm:mb-6">
                 Total Activities: {moodSummary.totalActivities}
               </div>
 
-              <div className="flex space-x-3">
+              <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
                 <button 
                   className="flex-1 px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300"
                   onClick={() => setShowMoodSummary(false)}
@@ -388,9 +388,10 @@ const Home = () => {
           </div>
         )}
 
-        <div className="flex justify-between items-center mb-6">
+        {/* Header controls - responsive layout */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 space-y-4 sm:space-y-0">
           <div className="flex items-center space-x-2">
-            <span className="text-lg font-medium">Week {week}</span>
+            <span className="text-base sm:text-lg font-medium">Week {week}</span>
             <button 
               className="p-1 rounded-full hover:bg-gray-300 disabled:opacity-50" 
               onClick={handlePrevWeek}
@@ -408,7 +409,7 @@ const Home = () => {
           </div>
 
           <div className="flex items-center space-x-2">
-            <span className="text-lg font-medium">Day {day}</span>
+            <span className="text-base sm:text-lg font-medium">Day {day}</span>
             <button 
               className="p-1 rounded-full hover:bg-gray-300 disabled:opacity-50" 
               onClick={handlePrevDay}
@@ -426,7 +427,7 @@ const Home = () => {
           </div>
 
           <button 
-            className="px-4 py-2 rounded-md text-white bg-[#e38b29] hover:brightness-110 disabled:opacity-50" 
+            className="w-full sm:w-auto px-4 py-2 rounded-md text-white bg-[#e38b29] hover:brightness-110 disabled:opacity-50" 
             onClick={handleSubmitDay}
             disabled={loading || daySubmitted}
           >
@@ -437,7 +438,7 @@ const Home = () => {
         {/* Progress indicator */}
         {activities.length > 0 && (
           <div className="bg-white rounded-md p-4 shadow-sm mb-6">
-            <div className="flex items-center justify-between mb-2">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-2 space-y-1 sm:space-y-0">
               <span className="text-sm font-medium text-gray-700">Progress</span>
               <span className="text-sm text-gray-600">
                 {completionStats.completed}/{completionStats.total} completed ({completionStats.percentage}%)
@@ -455,11 +456,11 @@ const Home = () => {
         {/* Add activity form */}
         <div className="bg-white rounded-md p-4 shadow-sm mb-6">
           {isAddingActivity ? (
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between space-y-2 sm:space-y-0">
               <input
                 type="text"
                 placeholder="Add activity"
-                className="flex-1 p-2 border-none focus:outline-none"
+                className="flex-1 p-2 border border-gray-300 sm:border-none rounded sm:rounded-none focus:outline-none focus:ring-2 focus:ring-amber-400 sm:focus:ring-0"
                 value={newActivity}
                 onChange={(e) => setNewActivity(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleAddActivity()}
@@ -468,14 +469,14 @@ const Home = () => {
               />
               <div className="flex space-x-2">
                 <button 
-                  className="px-4 py-2 bg-gray-200 rounded-md text-gray-700 hover:bg-gray-300 disabled:opacity-50" 
+                  className="flex-1 sm:flex-none px-4 py-2 bg-gray-200 rounded-md text-gray-700 hover:bg-gray-300 disabled:opacity-50" 
                   onClick={() => setIsAddingActivity(false)}
                   disabled={loading}
                 >
                   Cancel
                 </button>
                 <button 
-                  className="px-4 py-2 bg-amber-400 rounded-md text-gray-700 hover:bg-amber-500 disabled:opacity-50" 
+                  className="flex-1 sm:flex-none px-4 py-2 bg-amber-400 rounded-md text-gray-700 hover:bg-amber-500 disabled:opacity-50" 
                   onClick={handleAddActivity}
                   disabled={loading || !newActivity.trim()}
                 >
@@ -509,121 +510,252 @@ const Home = () => {
             </div>
           ) : (
             activities.map(activity => (
-              <div key={activity.id} className="mb-4 flex items-center">
-                <div className="w-1 h-12 bg-amber-500 mr-4"></div>
-                <div className="flex-1">
-                  {isEditing === activity.id ? (
-                    <input
-                      type="text"
-                      className="w-full p-1 border rounded focus:outline-none"
-                      value={editText}
-                      onChange={(e) => setEditText(e.target.value)}
-                      onKeyPress={(e) => e.key === 'Enter' && handleSaveEdit(activity.id)}
-                      disabled={loading}
-                    />
-                  ) : (
-                    <span className={activity.completed ? 'line-through text-gray-500' : ''}>
-                      {activity.name}
-                    </span>
-                  )}
-                </div>
-
-                <div className="relative">
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      showMoodOptions(activity.id);
-                    }}
-                    disabled={loading}
-                    className={`px-4 py-2 rounded-md mr-4 text-white hover:brightness-110 disabled:opacity-50 ${
-                      activity.mood === 'Calm' ? 'bg-green-400' :
-                      activity.mood === 'Neutral' ? 'bg-amber-400' :
-                      'bg-red-400'
-                    }`}
-                  >
-                    {activity.mood}
-                  </button>
-
-                  {showMoodSelector && selectedActivityId === activity.id && (
-                    <div className="absolute z-10 mt-1 w-full shadow-md rounded-md bg-white">
-                      <button 
-                        className="w-full py-2 text-left px-4 hover:bg-green-500 bg-green-400 text-white block disabled:opacity-50" 
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleSetMood(activity.id, 'Calm');
-                        }}
-                        disabled={loading}
-                      >
-                        Calm
-                      </button>
-                      <button 
-                        className="w-full py-2 text-left px-4 hover:bg-amber-500 bg-amber-400 text-white block disabled:opacity-50" 
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleSetMood(activity.id, 'Neutral');
-                        }}
-                        disabled={loading}
-                      >
-                        Neutral
-                      </button>
-                      <button 
-                        className="w-full py-2 text-left px-4 hover:bg-red-500 bg-red-400 text-white block disabled:opacity-50" 
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleSetMood(activity.id, 'Stressed');
-                        }}
-                        disabled={loading}
-                      >
-                        Stressed
-                      </button>
+              <div key={activity.id} className="mb-4">
+                {/* Mobile layout */}
+                <div className="block sm:hidden">
+                  <div className="flex items-start mb-2">
+                    <div className="w-1 h-16 bg-amber-500 mr-3 flex-shrink-0"></div>
+                    <div className="flex-1 min-w-0">
+                      {isEditing === activity.id ? (
+                        <input
+                          type="text"
+                          className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-amber-400"
+                          value={editText}
+                          onChange={(e) => setEditText(e.target.value)}
+                          onKeyPress={(e) => e.key === 'Enter' && handleSaveEdit(activity.id)}
+                          disabled={loading}
+                        />
+                      ) : (
+                        <span className={`block py-5 text-sm sm:text-base break-words ${activity.completed ? 'line-through text-gray-500' : ''}`}>
+                          {activity.name}
+                        </span>
+                      )}
                     </div>
-                  )}
+                  </div>
+                  
+                  {/* Mobile controls */}
+                  <div className="ml-4 space-y-2">
+                    <div className="flex flex-wrap gap-2">
+                      <div className="relative">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            showMoodOptions(activity.id);
+                          }}
+                          disabled={loading}
+                          className={`px-5 py-3 text-sm rounded-md text-white hover:brightness-110 disabled:opacity-50 ${
+                            activity.mood === 'Calm' ? 'bg-green-400 px-7' :
+                            activity.mood === 'Neutral' ? 'bg-amber-400' :
+                            'bg-red-400'
+                          }`}
+                        >
+                          {activity.mood}
+                        </button>
+
+                        {showMoodSelector && selectedActivityId === activity.id && (
+                          <div className="absolute z-10 mt-1 w-full shadow-md rounded-md bg-white">
+                            <button 
+                              className="w-full py-2 text-left px-6 hover:bg-green-500 bg-green-400 text-white block disabled:opacity-50" 
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleSetMood(activity.id, 'Calm');
+                              }}
+                              disabled={loading}
+                            >
+                              Calm
+                            </button>
+                            <button 
+                              className="w-full py-2 text-left px-5 hover:bg-amber-500 bg-amber-400 text-white block disabled:opacity-50" 
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleSetMood(activity.id, 'Neutral');
+                              }}
+                              disabled={loading}
+                            >
+                              Neutral
+                            </button>
+                            <button 
+                              className="w-full py-2 text-left px-4 hover:bg-red-500 bg-red-400 text-white block disabled:opacity-50" 
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleSetMood(activity.id, 'Stressed');
+                              }}
+                              disabled={loading}
+                            >
+                              Stressed
+                            </button>
+                          </div>
+                        )}
+                      </div>
+
+                      <button
+                        className={`px-3 py-1 text-sm rounded-md hover:brightness-110 disabled:opacity-50 ${
+                          activity.completed ? 'bg-green-400 text-white' : 'bg-red-400 text-white'
+                        }`}
+                        onClick={() => handleToggleCompletion(activity.id)}
+                        disabled={loading}
+                      >
+                        {activity.completed ? 'Done' : 'Not Done'}
+                      </button>
+
+                      {isEditing === activity.id ? (
+                        <>
+                          <button 
+                            className="p-2 bg-green-200 rounded-md hover:bg-green-300 disabled:opacity-50" 
+                            onClick={() => handleSaveEdit(activity.id)}
+                            disabled={loading || !editText.trim()}
+                          >
+                            ✔
+                          </button>
+                          <button 
+                            className="p-2 bg-gray-200 rounded-md hover:bg-gray-300 disabled:opacity-50" 
+                            onClick={handleCancelEdit}
+                            disabled={loading}
+                          >
+                            ✖
+                          </button>
+                        </>
+                      ) : (
+                        <button 
+                          className="p-2 bg-gray-200 rounded-md hover:bg-gray-300 disabled:opacity-50" 
+                          onClick={() => handleEdit(activity)}
+                          disabled={loading}
+                        >
+                          ✎
+                        </button>
+                      )}
+
+                      <button 
+                        className="p-2 bg-red-200 rounded-md hover:bg-red-300 disabled:opacity-50" 
+                        onClick={() => confirmDeleteActivity(activity.id)}
+                        disabled={loading}
+                      >
+                        🗑
+                      </button>
+
+                    </div>
+
+                    
+                  </div>
                 </div>
 
-                {isEditing === activity.id ? (
-                  <>
-                    <button 
-                      className="p-2 bg-green-200 rounded-md mr-2 hover:bg-green-300 disabled:opacity-50" 
-                      onClick={() => handleSaveEdit(activity.id)}
-                      disabled={loading || !editText.trim()}
+                {/* Desktop layout */}
+                <div className="hidden sm:flex items-center">
+                  <div className="w-1 h-12 bg-amber-500 mr-4"></div>
+                  <div className="flex-1 min-w-0">
+                    {isEditing === activity.id ? (
+                      <input
+                        type="text"
+                        className="w-full p-1 border rounded focus:outline-none"
+                        value={editText}
+                        onChange={(e) => setEditText(e.target.value)}
+                        onKeyPress={(e) => e.key === 'Enter' && handleSaveEdit(activity.id)}
+                        disabled={loading}
+                      />
+                    ) : (
+                      <span className={`break-words ${activity.completed ? 'line-through text-gray-500' : ''}`}>
+                        {activity.name}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="relative">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        showMoodOptions(activity.id);
+                      }}
+                      disabled={loading}
+                      className={`px-4 py-2 rounded-md mr-4 text-white hover:brightness-110 disabled:opacity-50 ${
+                        activity.mood === 'Calm' ? 'bg-green-400' :
+                        activity.mood === 'Neutral' ? 'bg-amber-400' :
+                        'bg-red-400'
+                      }`}
                     >
-                      ✔
+                      {activity.mood}
                     </button>
+
+                    {showMoodSelector && selectedActivityId === activity.id && (
+                      <div className="absolute z-10 mt-1 w-full shadow-md rounded-md bg-white">
+                        <button 
+                          className="w-full py-2 text-left px-4 hover:bg-green-500 bg-green-400 text-white block disabled:opacity-50" 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleSetMood(activity.id, 'Calm');
+                          }}
+                          disabled={loading}
+                        >
+                          Calm
+                        </button>
+                        <button 
+                          className="w-full py-2 text-left px-4 hover:bg-amber-500 bg-amber-400 text-white block disabled:opacity-50" 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleSetMood(activity.id, 'Neutral');
+                          }}
+                          disabled={loading}
+                        >
+                          Neutral
+                        </button>
+                        <button 
+                          className="w-full py-2 text-left px-4 hover:bg-red-500 bg-red-400 text-white block disabled:opacity-50" 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleSetMood(activity.id, 'Stressed');
+                          }}
+                          disabled={loading}
+                        >
+                          Stressed
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  {isEditing === activity.id ? (
+                    <>
+                      <button 
+                        className="p-2 bg-green-200 rounded-md mr-2 hover:bg-green-300 disabled:opacity-50" 
+                        onClick={() => handleSaveEdit(activity.id)}
+                        disabled={loading || !editText.trim()}
+                      >
+                        ✔
+                      </button>
+                      <button 
+                        className="p-2 bg-gray-200 rounded-md mr-2 hover:bg-gray-300 disabled:opacity-50" 
+                        onClick={handleCancelEdit}
+                        disabled={loading}
+                      >
+                        ✖
+                      </button>
+                    </>
+                  ) : (
                     <button 
                       className="p-2 bg-gray-200 rounded-md mr-2 hover:bg-gray-300 disabled:opacity-50" 
-                      onClick={handleCancelEdit}
+                      onClick={() => handleEdit(activity)}
                       disabled={loading}
                     >
-                      ✖
+                      ✎
                     </button>
-                  </>
-                ) : (
+                  )}
+
                   <button 
-                    className="p-2 bg-gray-200 rounded-md mr-2 hover:bg-gray-300 disabled:opacity-50" 
-                    onClick={() => handleEdit(activity)}
+                    className="p-2 bg-red-200 rounded-md mr-2 hover:bg-red-300 disabled:opacity-50" 
+                    onClick={() => confirmDeleteActivity(activity.id)}
                     disabled={loading}
                   >
-                    ✎
+                    🗑
                   </button>
-                )}
 
-                <button 
-                  className="p-2 bg-red-200 rounded-md mr-2 hover:bg-red-300 disabled:opacity-50" 
-                  onClick={() => confirmDeleteActivity(activity.id)}
-                  disabled={loading}
-                >
-                  🗑
-                </button>
-
-                <button
-                  className={`px-4 py-2 rounded-md hover:brightness-110 disabled:opacity-50 ${
-                    activity.completed ? 'bg-green-400 text-white' : 'bg-red-400 text-white'
-                  }`}
-                  onClick={() => handleToggleCompletion(activity.id)}
-                  disabled={loading}
-                >
-                  {activity.completed ? 'Done' : 'Not Done'}
-                </button>
+                  <button
+                    className={`px-4 py-2 rounded-md hover:brightness-110 disabled:opacity-50 ${
+                      activity.completed ? 'bg-green-400 text-white' : 'bg-red-400 text-white'
+                    }`}
+                    onClick={() => handleToggleCompletion(activity.id)}
+                    disabled={loading}
+                  >
+                    {activity.completed ? 'Done' : 'Not Done'}
+                  </button>
+                </div>
               </div>
             ))
           )}
@@ -631,11 +763,11 @@ const Home = () => {
 
         {/* Delete confirmation modal */}
         {showDeleteModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-            <div className="bg-white p-6 rounded-md shadow-md w-96">
+          <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 p-4">
+            <div className="bg-white p-6 rounded-md shadow-md w-full max-w-sm">
               <h2 className="text-lg font-semibold mb-4">Delete Activity?</h2>
-              <p className="mb-6">Are you sure you want to delete this activity?</p>
-              <div className="flex justify-end space-x-4">
+              <p className="mb-6 text-sm sm:text-base">Are you sure you want to delete this activity?</p>
+              <div className="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-4">
                 <button 
                   className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300 disabled:opacity-50" 
                   onClick={handleCancelDelete}

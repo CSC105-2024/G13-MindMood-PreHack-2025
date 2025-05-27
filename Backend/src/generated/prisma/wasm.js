@@ -138,6 +138,25 @@ exports.Prisma.ActivityScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.SubmissionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  week: 'week',
+  day: 'day',
+  overallMood: 'overallMood',
+  overallMessage: 'overallMessage',
+  totalActivities: 'totalActivities',
+  calmCount: 'calmCount',
+  neutralCount: 'neutralCount',
+  stressedCount: 'stressedCount',
+  calmPercentage: 'calmPercentage',
+  neutralPercentage: 'neutralPercentage',
+  stressedPercentage: 'stressedPercentage',
+  activitiesData: 'activitiesData',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -151,7 +170,8 @@ exports.Prisma.NullsOrder = {
 
 exports.Prisma.ModelName = {
   User: 'User',
-  Activity: 'Activity'
+  Activity: 'Activity',
+  Submission: 'Submission'
 };
 
 /**

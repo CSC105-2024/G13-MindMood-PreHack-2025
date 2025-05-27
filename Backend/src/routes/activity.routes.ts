@@ -18,4 +18,14 @@ activityRoutes.put('/:id', ActivityController.update);
 // DELETE /activities/:id - Delete activity
 activityRoutes.delete('/:id', ActivityController.delete);
 
+// POST /activities/submit - Submit day and generate mood summary
+activityRoutes.post('/submit', ActivityController.submitDay);
+
+// GET /activities/submission - Get submission by date
+activityRoutes.get('/submission', ActivityController.getSubmission);
+
+// GET /activities/submissions/all - Get all submissions for user
+activityRoutes.get('/submissions/all', ActivityController.getAllSubmissions);
+
+
 export default activityRoutes;

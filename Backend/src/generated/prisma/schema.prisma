@@ -9,13 +9,14 @@ datasource db {
 }
 
 model User {
-  id             Int        @id @default(autoincrement())
-  username       String     @unique
-  email          String     @unique
+  id             Int          @id @default(autoincrement())
+  username       String       @unique
+  email          String       @unique
   password       String
   profilePicture String?
-  createdAt      DateTime   @default(now())
+  createdAt      DateTime     @default(now())
   activities     Activity[]
+  submissions    Submission[]
 }
 
 model Activity {
@@ -30,5 +31,28 @@ model Activity {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@index([userId, week, day])
+}
+
+model Submission {
+  id                 Int      @id @default(autoincrement())
+  userId             Int
+  week               Int
+  day                Int
+  overallMood        String
+  overallMessage     String
+  totalActivities    Int
+  calmCount          Int
+  neutralCount       Int
+  stressedCount      Int
+  calmPercentage     Int
+  neutralPercentage  Int
+  stressedPercentage Int
+  activitiesData     String // JSON string of activities
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, week, day]) // Ensures one submission per user per day
   @@index([userId, week, day])
 }
