@@ -157,7 +157,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/settawutsirithongkaset/Documents/G13-MindMood-PreHack-2025/Backend/src/generated/prisma",
+      "value": "D:\\โฟลเดอร์ใหม่ (2)\\G13-MindMood-PreHack-2025-main\\G13-MindMood-PreHack-2025-main\\Backend\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -166,12 +166,12 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "darwin-arm64",
+        "value": "windows",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/Users/settawutsirithongkaset/Documents/G13-MindMood-PreHack-2025/Backend/prisma/schema.prisma",
+    "sourceFilePath": "D:\\โฟลเดอร์ใหม่ (2)\\G13-MindMood-PreHack-2025-main\\G13-MindMood-PreHack-2025-main\\Backend\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -185,6 +185,7 @@ const config = {
     "db"
   ],
   "activeProvider": "sqlite",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -233,8 +234,8 @@ exports.PrismaClient = PrismaClient
 Object.assign(exports, Prisma)
 
 // file annotations for bundling tools to include these files
-path.join(__dirname, "libquery_engine-darwin-arm64.dylib.node");
-path.join(process.cwd(), "src/generated/prisma/libquery_engine-darwin-arm64.dylib.node")
+path.join(__dirname, "query_engine-windows.dll.node");
+path.join(process.cwd(), "src/generated/prisma/query_engine-windows.dll.node")
 // file annotations for bundling tools to include these files
 path.join(__dirname, "schema.prisma");
 path.join(process.cwd(), "src/generated/prisma/schema.prisma")

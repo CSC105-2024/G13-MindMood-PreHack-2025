@@ -156,7 +156,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/settawutsirithongkaset/Documents/G13-MindMood-PreHack-2025/Backend/src/generated/prisma",
+      "value": "D:\\โฟลเดอร์ใหม่ (2)\\G13-MindMood-PreHack-2025-main\\G13-MindMood-PreHack-2025-main\\Backend\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -165,12 +165,12 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "darwin-arm64",
+        "value": "windows",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/Users/settawutsirithongkaset/Documents/G13-MindMood-PreHack-2025/Backend/prisma/schema.prisma",
+    "sourceFilePath": "D:\\โฟลเดอร์ใหม่ (2)\\G13-MindMood-PreHack-2025-main\\G13-MindMood-PreHack-2025-main\\Backend\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -184,6 +184,7 @@ const config = {
     "db"
   ],
   "activeProvider": "sqlite",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {

@@ -100,7 +100,7 @@ function OverAll() {
     if (!submission) {
       return (
         <div>
-          <h2 className="text-3xl font-bold text-amber-800 mb-4">
+          <h2 className="text-2xl md:text-3xl font-bold text-amber-800 mb-4">
             {dayName} - Week {currentWeek}, Day {selectedDay}
           </h2>
           <div className="bg-amber-200 p-4 rounded-lg">
@@ -123,61 +123,61 @@ function OverAll() {
 
     return (
       <div>
-        <h2 className="text-3xl font-bold text-amber-800 mb-4">
+        <h2 className="text-2xl md:text-3xl font-bold text-amber-800 mb-4">
           {dayName} - Week {currentWeek}, Day {selectedDay}
         </h2>
         
         {/* Overall Mood Summary */}
-        <div className="bg-white p-6 rounded-lg shadow-md mb-6">
+        <div className="bg-white p-4 md:p-6 rounded-lg shadow-md mb-6">
           <div className="text-center mb-4">
-            <div className="text-4xl mb-2">
+            <div className="text-3xl md:text-4xl mb-2">
               {submission.overallMood === 'Calm' && '😌'}
               {submission.overallMood === 'Neutral' && '😐'}
               {submission.overallMood === 'Stressed' && '😰'}
             </div>
-            <div className="text-2xl font-bold text-gray-700">{submission.overallMood}</div>
-            <p className="text-gray-600 mt-2">{submission.overallMessage}</p>
+            <div className="text-xl md:text-2xl font-bold text-gray-700">{submission.overallMood}</div>
+            <p className="text-gray-600 mt-2 text-sm md:text-base">{submission.overallMessage}</p>
           </div>
 
           {/* Mood Breakdown */}
-          <div className="grid grid-cols-3 gap-4 mb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 mb-4">
             <div className="text-center p-3 bg-green-100 rounded-lg">
-              <div className="text-lg font-semibold text-green-700">Calm</div>
-              <div className="text-2xl font-bold text-green-800">{submission.calmPercentage}%</div>
-              <div className="text-sm text-green-600">{submission.calmCount} activities</div>
+              <div className="text-sm md:text-lg font-semibold text-green-700">Calm</div>
+              <div className="text-xl md:text-2xl font-bold text-green-800">{submission.calmPercentage}%</div>
+              <div className="text-xs md:text-sm text-green-600">{submission.calmCount} activities</div>
             </div>
             <div className="text-center p-3 bg-amber-100 rounded-lg">
-              <div className="text-lg font-semibold text-amber-700">Neutral</div>
-              <div className="text-2xl font-bold text-amber-800">{submission.neutralPercentage}%</div>
-              <div className="text-sm text-amber-600">{submission.neutralCount} activities</div>
+              <div className="text-sm md:text-lg font-semibold text-amber-700">Neutral</div>
+              <div className="text-xl md:text-2xl font-bold text-amber-800">{submission.neutralPercentage}%</div>
+              <div className="text-xs md:text-sm text-amber-600">{submission.neutralCount} activities</div>
             </div>
             <div className="text-center p-3 bg-red-100 rounded-lg">
-              <div className="text-lg font-semibold text-red-700">Stressed</div>
-              <div className="text-2xl font-bold text-red-800">{submission.stressedPercentage}%</div>
-              <div className="text-sm text-red-600">{submission.stressedCount} activities</div>
+              <div className="text-sm md:text-lg font-semibold text-red-700">Stressed</div>
+              <div className="text-xl md:text-2xl font-bold text-red-800">{submission.stressedPercentage}%</div>
+              <div className="text-xs md:text-sm text-red-600">{submission.stressedCount} activities</div>
             </div>
           </div>
 
-          <div className="text-center text-gray-600">
+          <div className="text-center text-gray-600 text-sm md:text-base">
             Total Activities: {submission.totalActivities}
           </div>
         </div>
 
         {/* Activities List */}
         {activities.length > 0 && (
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-bold text-gray-800 mb-4">Activities Completed</h3>
+          <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
+            <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-4">Activities Completed</h3>
             <div className="space-y-3">
               {activities.map((activity, index) => (
-                <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div key={index} className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 bg-gray-50 rounded-lg gap-2">
                   <div className="flex items-center">
                     <div className="w-3 h-3 bg-amber-500 rounded-full mr-3"></div>
-                    <span className="font-medium">{activity.name}</span>
+                    <span className="font-medium text-sm md:text-base">{activity.name}</span>
                     {activity.completed && (
-                      <span className="ml-2 text-green-600 text-sm">✓ Completed</span>
+                      <span className="ml-2 text-green-600 text-xs md:text-sm">✓ Completed</span>
                     )}
                   </div>
-                  <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                  <span className={`px-3 py-1 rounded-full text-xs md:text-sm font-medium self-start sm:self-auto ${
                     activity.mood === 'Calm' ? 'bg-green-200 text-green-800' :
                     activity.mood === 'Neutral' ? 'bg-amber-200 text-amber-800' :
                     'bg-red-200 text-red-800'
@@ -191,7 +191,7 @@ function OverAll() {
         )}
 
         {/* Submission Date */}
-        <div className="mt-4 text-sm text-gray-500">
+        <div className="mt-4 text-xs md:text-sm text-gray-500">
           Submitted on: {new Date(submission.createdAt).toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'long',
@@ -207,7 +207,7 @@ function OverAll() {
   return (
     <>
       <Navbar />
-      <div className="p-10 py-25 bg-amber-50 min-h-screen">
+      <div className="p-4 md:p-10 py-6 md:py-25 bg-amber-50 min-h-screen">
         {/* Error message */}
         {error && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
@@ -222,78 +222,80 @@ function OverAll() {
           </div>
         )}
 
-        <div className="flex gap-10">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-10">
           {/* Left: Week Controls + Day Buttons */}
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 lg:min-w-0 lg:w-auto">
             {/* Week Pagination Controls */}
             <div className="flex justify-between items-center mb-4 gap-2">
               <button
                 onClick={handlePrevWeek}
                 disabled={currentWeek === 1}
-                className="px-4 py-2 bg-amber-700 text-white rounded disabled:opacity-50"
+                className="px-3 md:px-4 py-2 bg-amber-700 text-white rounded disabled:opacity-50 text-sm md:text-base"
               >
                 Previous
               </button>
-              <span className="text-xl font-semibold">Week {currentWeek}</span>
+              <span className="text-lg md:text-xl font-semibold">Week {currentWeek}</span>
               <button
                 onClick={handleNextWeek}
                 disabled={currentWeek === Object.keys(weeks).length}
-                className="px-4 py-2 bg-amber-700 text-white rounded disabled:opacity-50"
+                className="px-3 md:px-4 py-2 bg-amber-700 text-white rounded disabled:opacity-50 text-sm md:text-base"
               >
                 Next
               </button>
             </div>
 
             {/* Day Buttons */}
-            {weeks[currentWeek].map((dayNumber) => (
-              <button
-                key={dayNumber}
-                onClick={() => handleDayClick(dayNumber)}
-                className={`p-5 text-2xl px-20 rounded-2xl text-white hover:brightness-110 relative ${
-                  selectedDay === dayNumber 
-                    ? 'bg-amber-800' 
-                    : hasSubmission(currentWeek, dayNumber)
-                      ? 'bg-amber-600'
-                      : 'bg-gray-400'
-                }`}
-              >
-                Day {dayNumber}
-                {hasSubmission(currentWeek, dayNumber) && (
-                  <div className="absolute top-2 right-2 w-3 h-3 bg-green-400 rounded-full"></div>
-                )}
-              </button>
-            ))}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-1 gap-3 lg:gap-4">
+              {weeks[currentWeek].map((dayNumber) => (
+                <button
+                  key={dayNumber}
+                  onClick={() => handleDayClick(dayNumber)}
+                  className={`p-3 lg:p-5 text-lg lg:text-2xl px-4 lg:px-20 rounded-xl lg:rounded-2xl text-white hover:brightness-110 relative ${
+                    selectedDay === dayNumber 
+                      ? 'bg-amber-800' 
+                      : hasSubmission(currentWeek, dayNumber)
+                        ? 'bg-amber-600'
+                        : 'bg-gray-400'
+                  }`}
+                >
+                  Day {dayNumber}
+                  {hasSubmission(currentWeek, dayNumber) && (
+                    <div className="absolute top-1 lg:top-2 right-1 lg:right-2 w-2 lg:w-3 h-2 lg:h-3 bg-green-400 rounded-full"></div>
+                  )}
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Right: Info Panel */}
-          <div className="flex-1 p-8 bg-amber-100 rounded-xl shadow-md">
+          <div className="flex-1 p-4 md:p-8 bg-amber-100 rounded-xl shadow-md">
             {renderSubmissionDetails()}
           </div>
         </div>
 
         {/* Summary Stats */}
-        <div className="mt-10 bg-white p-6 rounded-lg shadow-md">
-          <h3 className="text-xl font-bold text-gray-800 mb-4">Week {currentWeek} Summary</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="mt-6 lg:mt-10 bg-white p-4 md:p-6 rounded-lg shadow-md">
+          <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-4">Week {currentWeek} Summary</h3>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
             <div className="text-center p-3 bg-blue-100 rounded-lg">
-              <div className="text-lg font-semibold text-blue-700">Total Days</div>
-              <div className="text-2xl font-bold text-blue-800">7</div>
+              <div className="text-sm md:text-lg font-semibold text-blue-700">Total Days</div>
+              <div className="text-xl md:text-2xl font-bold text-blue-800">7</div>
             </div>
             <div className="text-center p-3 bg-green-100 rounded-lg">
-              <div className="text-lg font-semibold text-green-700">Submitted</div>
-              <div className="text-2xl font-bold text-green-800">
+              <div className="text-sm md:text-lg font-semibold text-green-700">Submitted</div>
+              <div className="text-xl md:text-2xl font-bold text-green-800">
                 {submissions.filter(sub => sub.week === currentWeek).length}
               </div>
             </div>
             <div className="text-center p-3 bg-amber-100 rounded-lg">
-              <div className="text-lg font-semibold text-amber-700">Pending</div>
-              <div className="text-2xl font-bold text-amber-800">
+              <div className="text-sm md:text-lg font-semibold text-amber-700">Pending</div>
+              <div className="text-xl md:text-2xl font-bold text-amber-800">
                 {7 - submissions.filter(sub => sub.week === currentWeek).length}
               </div>
             </div>
             <div className="text-center p-3 bg-purple-100 rounded-lg">
-              <div className="text-lg font-semibold text-purple-700">Completion</div>
-              <div className="text-2xl font-bold text-purple-800">
+              <div className="text-sm md:text-lg font-semibold text-purple-700">Completion</div>
+              <div className="text-xl md:text-2xl font-bold text-purple-800">
                 {Math.round((submissions.filter(sub => sub.week === currentWeek).length / 7) * 100)}%
               </div>
             </div>

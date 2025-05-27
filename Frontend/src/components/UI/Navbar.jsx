@@ -20,18 +20,18 @@ const Navbar = () => {
         <nav className="hidden md:flex space-x-4">
           {isAuthenticated ? (
             <>
-              <NavLink to="/Home" end className="px-4 py-2 bg-amber-300 rounded-md text-gray-700 hover:bg-amber-400 transition">
+              <NavLink to="/Home" end className="px-4 py-2 text-gray-700 hover:text-black transition hover:bg-amber-400 rounded-2xl">
                 Home
               </NavLink>
-              <NavLink to="/overall" className="px-4 py-2 text-gray-700 hover:text-black transition">
+              <NavLink to="/overall" className="px-4 py-2 text-gray-700 hover:text-black transition hover:bg-amber-400 rounded-2xl">
                 Overall
               </NavLink>
-              <NavLink to="/profile" className="px-4 py-2 text-gray-700 hover:text-black transition">
+              <NavLink to="/profile" className="px-4 py-2 text-gray-700 hover:text-black transition hover:bg-amber-400 rounded-2xl">
                 Profile
               </NavLink>
               <button 
                 onClick={handleLogout} 
-                className="px-4 py-2 text-gray-700 hover:text-black transition"
+                className="px-4 py-2 text-gray-700 hover:text-black transition hover:bg-red-400 rounded-2xl"
               >
                 Logout
               </button>
