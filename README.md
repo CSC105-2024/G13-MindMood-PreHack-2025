@@ -12,8 +12,8 @@ This project aims to promote mindfulness and improve personal well-being through
    git clone https://github.com/your-username/G13_MindMood.git
    cd G13_MindMood
 
-:hammer: Frontend - React
-:wrench: Tech Stack
+##:robot: Frontend - React
+
 React
 
 Axios
@@ -22,7 +22,7 @@ React Router DOM
 
 Tailwind CSS
 
-###:rocket: Getting Started - React Client
+Getting Started - React Client
 1.Navigate to the frontend directory:
  ```bash
 cd frontend
@@ -43,3 +43,29 @@ npm run dev
  ```bash
 (http://localhost:5173)
  ```
+
+### :wrench: Backend - Hono
+### :hammer_and_wrench: 
+Tech Stack
+Hono
+SQLite
+Prisma
+
+### :electric_plug: API Endpoints
+### User
+| Method      |	     Endpoint             |	     Description                           |
+|POST         |	/user/createUser	        |Create an account for a user                  |
+|GET          |	/user/getUsername/:userId |Get username of a user based on given user id |
+|PATCH        |	/user/updateProfile	     |Update user profile information               |
+
+Activity
+Method	Endpoint	Description
+POST	/activity/createActivity	Create a new activity entry
+GET	/activity/getActivities/:userId	Get all activities logged by a user
+PATCH	/activity/updateActivity/:id	Update an existing activity entry
+DELETE	/activity/deleteActivity/:id	Delete an activity entry
+
+Mood
+Method	Endpoint	Description
+GET	/mood/getMoodStats/:userId	Get mood summary and statistics for a user
+
