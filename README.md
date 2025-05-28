@@ -11,3 +11,17 @@ This project aims to promote mindfulness and improve personal well-being through
    ```bash
    git clone https://github.com/your-username/G13_MindMood.git
    cd G13_MindMood
+
+:hammer: Frontend - React
+:wrench: Tech Stack
+React
+
+Axios
+
+React Router DOM
+
+Tailwind CSS
+
+###:rocket: Getting Started - React Client
+Navigate to the frontend directory:
+ ```bash
