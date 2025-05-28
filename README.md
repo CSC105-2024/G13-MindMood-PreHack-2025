@@ -23,5 +23,23 @@ React Router DOM
 Tailwind CSS
 
 ###:rocket: Getting Started - React Client
-Navigate to the frontend directory:
+1.Navigate to the frontend directory:
  ```bash
+cd frontend
+   ```
+2.Navigate to the frontend directory:
+ ```bash
+npm install
+   ```
+3.Create a .env file and configure the following variables:
+ ```bash
+DATABASE_URL="file:./dev.db"
+ ```
+4.Start the development server:
+ ```bash
+npm run dev
+ ```
+5.The server will be running on:
+ ```bash
+[(http://localhost:5173)](http://localhost:5173)
+ ```
