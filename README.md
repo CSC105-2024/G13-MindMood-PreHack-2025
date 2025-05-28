@@ -5,7 +5,7 @@ This project aims to promote mindfulness and improve personal well-being through
 
 ---
 
-## pointright: Getting Started
+## :point_right: Getting Started
 
 1. **Clone the repository:**  
    ```bash
