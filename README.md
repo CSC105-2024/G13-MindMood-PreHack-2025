@@ -30,7 +30,6 @@ React Router DOM
 
 Tailwind CSS
 
-Zustand
 
 🚀 Getting Started - React Client
 Navigate to the frontend directory:
@@ -38,7 +37,7 @@ Navigate to the frontend directory:
 bash
 Copy
 Edit
-cd frontend
+cd Frontend
 Install dependencies:
 
 bash
@@ -66,32 +65,102 @@ Bcrypt
 🔌 API Routes
 All backend routes are organized and mounted as follows:
 
-ts
-Copy
-Edit
-app.route('/api/auth', authRoutes);
-app.route('/api/activities', activityRoutes);
-app.route('/api/moods', moodRoutes);
-✨ Note: Each route module handles the respective logic for user authentication, activity CRUD, and mood stats.
+Health Check
+GET /health
+Description: Checks if the server is running.
 
-🧭 Auth (/api/auth)
-POST /signup - Register a new user
+Example URL: http://localhost:3000/health
 
-POST /login - Authenticate and receive token
+Authentication Routes
+Base Path: /auth
 
-GET /me - Get current user info (requires auth)
+POST /auth/signup
+Description: User registration.
 
-🗂️ Activities (/api/activities)
-POST /create - Create a new activity
+Example URL: http://localhost:3000/auth/signup
 
-GET /all/:userId - Fetch all user activities
+POST /auth/login
+Description: User login.
 
-PATCH /update/:id - Update an activity
+Example URL: http://localhost:3000/auth/login
 
-DELETE /delete/:id - Delete an activity
+POST /auth/forgot-password
+Description: Request a password reset.
 
-📊 Mood Stats (/api/moods)
-GET /stats/:userId - Get mood stats summary for a user
+Example URL: http://localhost:3000/auth/forgot-password
+
+POST /auth/reset-password/:token
+Description: Reset password using a token.
+
+Example URL: http://localhost:3000/auth/reset-password/YOUR_RESET_TOKEN
+
+GET /auth/profile
+Description: Get user profile information. (Requires authentication)
+
+Example URL: http://localhost:3000/auth/profile
+
+PUT /auth/update-profile
+Description: Update user profile information. (Requires authentication)
+
+Example URL: http://localhost:3000/auth/update-profile
+
+GET /auth/verify-token
+Description: Verify an authentication token. (Requires authentication)
+
+Example URL: http://localhost:3000/auth/verify-token
+
+Activity Routes
+Base Path: /api/activities
+
+POST /api/activities/
+Description: Create a new activity.
+
+Example URL: http://localhost:3000/api/activities/
+
+GET /api/activities/
+Description: Get activities by date. (Likely expects query parameters for the date)
+
+Example URL: http://localhost:3000/api/activities/?date=YYYY-MM-DD
+
+GET /api/activities/all
+Description: Get all activities.
+
+Example URL: http://localhost:3000/api/activities/all
+
+PUT /api/activities/:id
+Description: Update an existing activity by its ID.
+
+Example URL: http://localhost:3000/api/activities/ACTIVITY_ID
+
+DELETE /api/activities/:id
+Description: Delete an activity by its ID.
+
+Example URL: http://localhost:3000/api/activities/ACTIVITY_ID
+
+POST /api/activities/submit
+Description: Submit activities for a day.
+
+Example URL: http://localhost:3000/api/activities/submit
+
+GET /api/activities/submission
+Description: Get submission by date. (Likely expects query parameters for the date)
+
+Example URL: http://localhost:3000/api/activities/submission?date=YYYY-MM-DD
+
+GET /api/activities/submissions/all
+Description: Get all submissions.
+
+Example URL: http://localhost:3000/api/activities/submissions/all
+
+POST /api/activities/clear-day
+Description: Clear all activities for a specific day.
+
+Example URL: http://localhost:3000/api/activities/clear-day
+
+POST /api/activities/clear-all
+Description: Clear all activities and submissions for a user.
+
+Example URL: http://localhost:3000/api/activities/clear-all
 
 🚀 Getting Started - Node.js Server
 Navigate to the backend directory:
@@ -125,5 +194,5 @@ bash
 Copy
 Edit
 npm run dev
-The server will be available at http://localhost:8000
+The server will be available at http://localhost:3000
 
