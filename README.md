@@ -101,11 +101,15 @@ DATABASE_URL="file:./dev.db"
  ```bash
 npx prisma migrate dev
  ```
-5.Start the development server:
+5.Generate Prisma client:
+ ```bash
+npx prisma generate
+ ```
+6.Start the development server:
  ```bash
 npm run dev
  ```
-6.The server will be running on::
+7.The server will be running on::
  ```bash
 (http://localhost:3000)
  ```
