@@ -1,16 +1,19 @@
-MindMood
-A full-stack mood-based activity tracker that helps users log and reflect on their daily moods through activities. Built using React, Hono, Prisma, and SQLite.
+## :brain: MindMood  
+&emsp;MindMood is a mood-based activity tracker that helps users monitor and reflect on their daily emotions and activities.  
+Users can log activities by mood category (Calm, Neutral, Stressed), edit and delete entries, and visualize their mood trends over time.  
+This project aims to promote mindfulness and improve personal well-being through mood awareness.
 
-🚀 Getting Started
-Clone the repository:
+---
 
-bash
-Copy
-Edit
-git clone https://github.com/your-username/MindMood.git
-cd MindMood
-🔮 Frontend - React
-🔧 Tech Stack
+## :point_right: Getting Started
+
+1. **Clone the repository:**  
+   ```bash
+   git clone https://github.com/your-username/G13_MindMood.git
+   cd G13_MindMood
+
+## :robot: Frontend - React
+
 React
 
 Axios
@@ -19,125 +22,90 @@ React Router DOM
 
 Tailwind CSS
 
-Vite
-
-🚀 Getting Started - React Client
-Navigate to the frontend directory:
-
-bash
-Copy
-Edit
+Getting Started - React Client
+1.Navigate to the frontend directory:
+ ```bash
 cd frontend
-Install dependencies:
-
-bash
-Copy
-Edit
+   ```
+2.Navigate to the frontend directory:
+ ```bash
 npm install
-Start the development server:
-
-bash
-Copy
-Edit
-npm run dev
-The client will be running on:
-👉 http://localhost:5173
-
-🧠 Backend - Hono
-🔧 Tech Stack
-Hono (Web Framework)
-
-Prisma (ORM)
-
-SQLite (Database)
-
-JWT (Authentication)
-
-🚀 Getting Started - Node.js Server
-Navigate to the backend directory:
-
-bash
-Copy
-Edit
-cd backend
-Install dependencies:
-
-bash
-Copy
-Edit
-npm install
-Create a .env file and configure the following variables:
-
-env
-Copy
-Edit
+   ```
+3.Create a .env file and configure the following variables:
+ ```bash
 DATABASE_URL="file:./dev.db"
-JWT_SECRET="your-secret-key"
-Run Prisma migrations:
-
-bash
-Copy
-Edit
-npx prisma migrate dev --name init
-Start the development server:
-
-bash
-Copy
-Edit
+ ```
+4.Start the development server:
+ ```bash
 npm run dev
-The server will be running on:
-👉 http://localhost:8000
+ ```
+5.The server will be running on:
+ ```bash
+(http://localhost:5173)
+ ```
 
-🔌 API Endpoints
-👤 User
-Method	Endpoint	Description
-POST	/auth/signup	Create a new user
-POST	/auth/login	Log in and get JWT token
-GET	/auth/me	Get current authenticated user info
+### :wrench: Backend - Hono
+### :hammer_and_wrench: 
+Tech Stack
+Hono
+SQLite
+Prisma
 
-✅ Activities
-Method	Endpoint	Description
-POST	/api/activities	Create an activity
-GET	/api/activities?week=&day=	Get activities for a specific week and day
-PUT	/api/activities/:id	Update an activity (name, mood, completed)
-DELETE	/api/activities/:id	Delete a specific activity
-POST	/api/activities/clear-day	Clear all activities for a given day
-DELETE	/api/activities/clear-all	Delete all activities and submissions
+### :robot: API Endpoints
+### User
+| Method | Endpoint               | Description                               |
+|--------|------------------------|-------------------------------------------|
+| POST   | /user/createUser       | Create a new user account                  |
+| GET    | /user/getUsername/:userId | Retrieve username by user ID               |
+| PATCH  | /user/updateProfile    | Update user profile information            |
 
-📊 Submission
-Method	Endpoint	Description
-POST	/api/submit	Submit a day's activities and generate mood summary
+### Activity
+| Method | Endpoint                      | Description                                 |
+|--------|-------------------------------|---------------------------------------------|
+| POST   | /activity/                    | Create a new activity                        |
+| GET    | /activity/                    | Get activities by week and day (query params: week, day) |
+| GET    | /activity/all                 | Get all activities for the authenticated user |
+| PUT    | /activity/:id                 | Update an activity by ID                     |
+| DELETE | /activity/:id                 | Delete an activity by ID                     |
+| POST   | /activity/clear-day           | Clear all activities for a specific week and day (body: week, day) |
+| POST   | /activity/clear-all           | Clear all activities and submissions for the authenticated user |
+
+### Submission (Mood Summary)
+| Method | Endpoint                       | Description                                |
+|--------|-------------------------------|--------------------------------------------|
+| POST   | /activity/submit               | Submit the day and generate mood summary (body: week, day) |
+| GET    | /activity/submission           | Get submission (mood summary) for a specific day (query params: week, day) |
+| GET    | /activity/submissions/all      | Get all mood submissions for the authenticated user |
 
 
+## :robot: Backend Server Setup
+Node.js
+Hono Framework
+Prisma ORM
+SQLite Database
 
-
-
-
-
-You said:
-activity shouldbe like this
-
-
-ChatGPT said:
-Got it! Here's an updated version of the README.md with the Activities section formatted just like your example — grouped with endpoint methods, paths, and clean descriptions in a table style:
-
-🔌 API Endpoints
-👤 User
-Method	Endpoint	Description
-POST	/auth/signup	Create a new user account
-POST	/auth/login	Log in and receive a JWT token
-GET	/auth/me	Get authenticated user information
-
-📅 Activity
-Method	Endpoint	Description
-POST	/api/activities	Create a new activity
-GET	/api/activities?week=&day=	Get activities for a specific week and day
-PUT	/api/activities/:activityId	Update an activity's name, mood, or completion status
-DELETE	/api/activities/:activityId	Delete a specific activity
-POST	/api/activities/clear-day	Clear all activities for a specific day (requires date & week)
-DELETE	/api/activities/clear-all	Delete all activities and submissions for the user
-
-🧾 Submission
-Method	Endpoint	Description
-POST	/api/submit	Submit all activities for a day and generate summary
-GET	/api/submissions	Get all submissions for the logged-in user
+Getting Started - React Client
+1.Navigate to the backend directory:
+ ```bash
+cd backend
+   ```
+2.Navigate to the backend directory:
+ ```bash
+npm install
+   ```
+3.Create a .env file and configure the following variables:
+ ```bash
+DATABASE_URL="file:./dev.db"
+ ```
+4.Run database migrations (if applicable):
+ ```bash
+npx prisma migrate dev
+ ```
+5.Start the development server:
+ ```bash
+npm run dev
+ ```
+6.The server will be running on::
+ ```bash
+(http://localhost:3000)
+ ```
