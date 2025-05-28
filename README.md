@@ -51,7 +51,7 @@ Hono
 SQLite
 Prisma
 
-### :electric_plug: API Endpoints
+### :robot: API Endpoints
 ### User
 | Method | Endpoint               | Description                               |
 |--------|------------------------|-------------------------------------------|
@@ -76,3 +76,36 @@ Prisma
 | POST   | /activity/submit               | Submit the day and generate mood summary (body: week, day) |
 | GET    | /activity/submission           | Get submission (mood summary) for a specific day (query params: week, day) |
 | GET    | /activity/submissions/all      | Get all mood submissions for the authenticated user |
+
+
+## :robot: Backend Server Setup
+Node.js
+Hono Framework
+Prisma ORM
+SQLite Database
+
+Getting Started - React Client
+1.Navigate to the backend directory:
+ ```bash
+cd backend
+   ```
+2.Navigate to the backend directory:
+ ```bash
+npm install
+   ```
+3.Create a .env file and configure the following variables:
+ ```bash
+DATABASE_URL="file:./dev.db"
+ ```
+4.Run database migrations (if applicable):
+ ```bash
+npx prisma migrate dev
+ ```
+5.Start the development server:
+ ```bash
+npm run dev
+ ```
+6.The server will be running on::
+ ```bash
+(http://localhost:3000)
+ ```
