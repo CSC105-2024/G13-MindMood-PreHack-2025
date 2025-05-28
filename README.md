@@ -1,11 +1,11 @@
-## :pushpin: MindMood  
+## :brain: MindMood  
 &emsp;MindMood is a mood-based activity tracker that helps users monitor and reflect on their daily emotions and activities.  
 Users can log activities by mood category (Calm, Neutral, Stressed), edit and delete entries, and visualize their mood trends over time.  
 This project aims to promote mindfulness and improve personal well-being through mood awareness.
 
 ---
 
-## :rocket: Getting Started
+## pointright: Getting Started
 
 1. **Clone the repository:**  
    ```bash
