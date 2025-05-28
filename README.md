@@ -53,20 +53,22 @@ Prisma
 
 ### :electric_plug: API Endpoints
 ### User
-| Method      |	     Endpoint             |	     Description                           |
-|-------------|-----------------------------|----------------------------------------------|
-|POST         |	/user/createUser	        |Create an account for a user                  |
-|GET          |	/user/getUsername/:userId |Get username of a user based on given user id |
-|PATCH        |	/user/updateProfile	     |Update user profile information               |
+| Method | Endpoint               | Description                             |
+|--------|------------------------|---------------------------------------|
+| POST   | /user/createUser       | Create an account for a user          |
+| GET    | /user/getUsername/:userId | Get username of a user based on given user id |
+| PATCH  | /user/updateProfile    | Update user profile information       |
 
-Activity
-Method	Endpoint	Description
-POST	/activity/createActivity	Create a new activity entry
-GET	/activity/getActivities/:userId	Get all activities logged by a user
-PATCH	/activity/updateActivity/:id	Update an existing activity entry
-DELETE	/activity/deleteActivity/:id	Delete an activity entry
+### Activity
+| Method | Endpoint                     | Description                             |
+|--------|------------------------------|---------------------------------------|
+| POST   | /activity/createActivity     | Create a new activity entry            |
+| GET    | /activity/getActivities/:userId | Get all activities logged by a user  |
+| PATCH  | /activity/updateActivity/:id | Update an existing activity entry      |
+| DELETE | /activity/deleteActivity/:id | Delete an activity entry                |
 
-Mood
-Method	Endpoint	Description
-GET	/mood/getMoodStats/:userId	Get mood summary and statistics for a user
+### Mood
+| Method | Endpoint               | Description                             |
+|--------|------------------------|---------------------------------------|
+| GET    | /mood/getMoodStats/:userId | Get mood summary and statistics for a user |
 
