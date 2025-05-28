@@ -10,7 +10,7 @@ Clone the repository:
 
 ```bash
 git clone https://github.com/your-username/mindmood.git
-cd mindmood
+cd G13-MindMood-PreHack-2025
 
 🚀 Getting Started
 Clone the repository:
@@ -33,22 +33,10 @@ Tailwind CSS
 
 🚀 Getting Started - React Client
 Navigate to the frontend directory:
-
-bash
-Copy
-Edit
 cd Frontend
 Install dependencies:
-
-bash
-Copy
-Edit
 npm install
 Start the development server:
-
-bash
-Copy
-Edit
 npm run dev
 The client will be running on http://localhost:5173
 
@@ -56,11 +44,13 @@ The client will be running on http://localhost:5173
 🧰 Tech Stack
 Hono
 
-SQLite (via Prisma)
+MySQL
 
 JWT
 
 Bcrypt
+
+Nodemailer
 
 🔌 API Routes
 All backend routes are organized and mounted as follows:
@@ -164,35 +154,12 @@ Example URL: http://localhost:3000/api/activities/clear-all
 
 🚀 Getting Started - Node.js Server
 Navigate to the backend directory:
-
-bash
-Copy
-Edit
-cd backend
+cd Backend
 Install dependencies:
-
-bash
-Copy
-Edit
-npm install
-Create a .env file and configure the environment:
-
-env
-Copy
-Edit
-DATABASE_URL="file:./dev.db"
-JWT_SECRET="your_jwt_secret"
-Apply Prisma migrations:
-
-bash
-Copy
-Edit
-npx prisma migrate dev --name init
-Start the backend server:
-
-bash
-Copy
-Edit
+npm i
+Create a .env file and configure the following variables:
+DATABASE_URL={Your database connection string}
+SHADOW_DATABASE_URL={Your shadow database connection string}
+Start the development server:
 npm run dev
-The server will be available at http://localhost:3000
-
+The server will be running on http://localhost:3000
