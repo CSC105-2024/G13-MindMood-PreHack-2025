@@ -26,7 +26,7 @@ Tailwind CSS
 Getting Started - React Client
 1.Navigate to the frontend directory:
  ```bash
-cd frontend
+cd Frontend
    ```
 2.Navigate to the frontend directory:
  ```bash
@@ -88,7 +88,7 @@ SQLite Database
 Getting Started - React Client
 1.Navigate to the backend directory:
  ```bash
-cd backend
+cd Backend
    ```
 2.Navigate to the backend directory:
  ```bash
@@ -96,7 +96,8 @@ npm install
    ```
 3.Create a .env file and configure the following variables:
  ```bash
-DATABASE_URL="file:./dev.db"
+DATABASE_URL={Your database connection string}
+SHADOW_DATABASE_URL={Your shadow database connection string}
  ```
 4.Run database migrations (if applicable):
  ```bash
