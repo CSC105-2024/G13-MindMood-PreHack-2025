@@ -12,7 +12,7 @@ This project aims to promote mindfulness and improve personal well-being through
    git clone https://github.com/your-username/G13_MindMood.git
    cd G13_MindMood
 
-##:robot: Frontend - React
+## :robot: Frontend - React
 
 React
 
@@ -53,22 +53,26 @@ Prisma
 
 ### :electric_plug: API Endpoints
 ### User
-| Method | Endpoint               | Description                             |
-|--------|------------------------|---------------------------------------|
-| POST   | /user/createUser       | Create an account for a user          |
-| GET    | /user/getUsername/:userId | Get username of a user based on given user id |
-| PATCH  | /user/updateProfile    | Update user profile information       |
+| Method | Endpoint               | Description                               |
+|--------|------------------------|-------------------------------------------|
+| POST   | /user/createUser       | Create a new user account                  |
+| GET    | /user/getUsername/:userId | Retrieve username by user ID               |
+| PATCH  | /user/updateProfile    | Update user profile information            |
 
 ### Activity
-| Method | Endpoint                     | Description                             |
-|--------|------------------------------|---------------------------------------|
-| POST   | /activity/createActivity     | Create a new activity entry            |
-| GET    | /activity/getActivities/:userId | Get all activities logged by a user  |
-| PATCH  | /activity/updateActivity/:id | Update an existing activity entry      |
-| DELETE | /activity/deleteActivity/:id | Delete an activity entry                |
+| Method | Endpoint                      | Description                                 |
+|--------|-------------------------------|---------------------------------------------|
+| POST   | /activity/                    | Create a new activity                        |
+| GET    | /activity/                    | Get activities by week and day (query params: week, day) |
+| GET    | /activity/all                 | Get all activities for the authenticated user |
+| PUT    | /activity/:id                 | Update an activity by ID                     |
+| DELETE | /activity/:id                 | Delete an activity by ID                     |
+| POST   | /activity/clear-day           | Clear all activities for a specific week and day (body: week, day) |
+| POST   | /activity/clear-all           | Clear all activities and submissions for the authenticated user |
 
-### Mood
-| Method | Endpoint               | Description                             |
-|--------|------------------------|---------------------------------------|
-| GET    | /mood/getMoodStats/:userId | Get mood summary and statistics for a user |
-
+### Submission (Mood Summary)
+| Method | Endpoint                       | Description                                |
+|--------|-------------------------------|--------------------------------------------|
+| POST   | /activity/submit               | Submit the day and generate mood summary (body: week, day) |
+| GET    | /activity/submission           | Get submission (mood summary) for a specific day (query params: week, day) |
+| GET    | /activity/submissions/all      | Get all mood submissions for the authenticated user |
