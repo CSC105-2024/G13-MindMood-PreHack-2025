@@ -10,7 +10,8 @@ This project aims to promote mindfulness and improve personal well-being through
 1. **Clone the repository:**  
    ```bash
    git clone https://github.com/your-username/G13_MindMood.git
-   cd G13_MindMood
+   cd G13-MindMood-PreHack-2025
+
 
 ## :robot: Frontend - React
 
