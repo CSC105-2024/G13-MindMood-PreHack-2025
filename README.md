@@ -41,5 +41,5 @@ npm run dev
  ```
 5.The server will be running on:
  ```bash
-[(http://localhost:5173)](http://localhost:5173)
+(http://localhost:5173)
  ```
