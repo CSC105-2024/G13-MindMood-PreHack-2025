@@ -1,27 +1,19 @@
-# 🧠 MindMood
-
-Track your daily activities with moods, visualize progress, and stay mindful.
+## :brain: MindMood  
+&emsp;MindMood is a mood-based activity tracker that helps users monitor and reflect on their daily emotions and activities.  
+Users can log activities by mood category (Calm, Neutral, Stressed), edit and delete entries, and visualize their mood trends over time.  
+This project aims to promote mindfulness and improve personal well-being through mood awareness.
 
 ---
 
-## 🚀 Getting Started
+## :point_right: Getting Started
 
-Clone the repository:
+1. **Clone the repository:**  
+   ```bash
+   git clone https://github.com/your-username/G13_MindMood.git
+   cd G13_MindMood
 
-```bash
-git clone https://github.com/your-username/mindmood.git
-cd G13-MindMood-PreHack-2025
+## :robot: Frontend - React
 
-🚀 Getting Started
-Clone the repository:
-
-bash
-Copy
-Edit
-git clone https://github.com/your-username/MindMood.git
-cd MindMood
-💻 Frontend - React
-🛠️ Tech Stack
 React
 
 Axios
@@ -30,136 +22,94 @@ React Router DOM
 
 Tailwind CSS
 
-
-🚀 Getting Started - React Client
-Navigate to the frontend directory:
-cd Frontend
-Install dependencies:
+Getting Started - React Client
+1.Navigate to the frontend directory:
+ ```bash
+cd frontend
+   ```
+2.Navigate to the frontend directory:
+ ```bash
 npm install
-Start the development server:
+   ```
+3.Create a .env file and configure the following variables:
+ ```bash
+DATABASE_URL="file:./dev.db"
+ ```
+4.Start the development server:
+ ```bash
 npm run dev
-The client will be running on http://localhost:5173
+ ```
+5.The server will be running on:
+ ```bash
+(http://localhost:5173)
+ ```
 
-⚙️ Backend - Hono
-🧰 Tech Stack
+### :wrench: Backend - Hono
+### :hammer_and_wrench: 
+Tech Stack
 Hono
+SQLite
+Prisma
 
-MySQL
+### :robot: API Endpoints
+### User
+| Method | Endpoint               | Description                               |
+|--------|------------------------|-------------------------------------------|
+| POST   | /user/createUser       | Create a new user account                  |
+| GET    | /user/getUsername/:userId | Retrieve username by user ID               |
+| PATCH  | /user/updateProfile    | Update user profile information            |
 
-JWT
+### Activity
+| Method | Endpoint                      | Description                                 |
+|--------|-------------------------------|---------------------------------------------|
+| POST   | /activity/                    | Create a new activity                        |
+| GET    | /activity/                    | Get activities by week and day (query params: week, day) |
+| GET    | /activity/all                 | Get all activities for the authenticated user |
+| PUT    | /activity/:id                 | Update an activity by ID                     |
+| DELETE | /activity/:id                 | Delete an activity by ID                     |
+| POST   | /activity/clear-day           | Clear all activities for a specific week and day (body: week, day) |
+| POST   | /activity/clear-all           | Clear all activities and submissions for the authenticated user |
 
-Bcrypt
+### Submission (Mood Summary)
+| Method | Endpoint                       | Description                                |
+|--------|-------------------------------|--------------------------------------------|
+| POST   | /activity/submit               | Submit the day and generate mood summary (body: week, day) |
+| GET    | /activity/submission           | Get submission (mood summary) for a specific day (query params: week, day) |
+| GET    | /activity/submissions/all      | Get all mood submissions for the authenticated user |
 
-Nodemailer
 
-🔌 API Routes
-All backend routes are organized and mounted as follows:
+## :robot: Backend Server Setup
+Node.js
+Hono Framework
+Prisma ORM
+SQLite Database
 
-Health Check
-GET /health
-Description: Checks if the server is running.
-
-Example URL: http://localhost:3000/health
-
-Authentication Routes
-Base Path: /auth
-
-POST /auth/signup
-Description: User registration.
-
-Example URL: http://localhost:3000/auth/signup
-
-POST /auth/login
-Description: User login.
-
-Example URL: http://localhost:3000/auth/login
-
-POST /auth/forgot-password
-Description: Request a password reset.
-
-Example URL: http://localhost:3000/auth/forgot-password
-
-POST /auth/reset-password/:token
-Description: Reset password using a token.
-
-Example URL: http://localhost:3000/auth/reset-password/YOUR_RESET_TOKEN
-
-GET /auth/profile
-Description: Get user profile information. (Requires authentication)
-
-Example URL: http://localhost:3000/auth/profile
-
-PUT /auth/update-profile
-Description: Update user profile information. (Requires authentication)
-
-Example URL: http://localhost:3000/auth/update-profile
-
-GET /auth/verify-token
-Description: Verify an authentication token. (Requires authentication)
-
-Example URL: http://localhost:3000/auth/verify-token
-
-Activity Routes
-Base Path: /api/activities
-
-POST /api/activities/
-Description: Create a new activity.
-
-Example URL: http://localhost:3000/api/activities/
-
-GET /api/activities/
-Description: Get activities by date. (Likely expects query parameters for the date)
-
-Example URL: http://localhost:3000/api/activities/?date=YYYY-MM-DD
-
-GET /api/activities/all
-Description: Get all activities.
-
-Example URL: http://localhost:3000/api/activities/all
-
-PUT /api/activities/:id
-Description: Update an existing activity by its ID.
-
-Example URL: http://localhost:3000/api/activities/ACTIVITY_ID
-
-DELETE /api/activities/:id
-Description: Delete an activity by its ID.
-
-Example URL: http://localhost:3000/api/activities/ACTIVITY_ID
-
-POST /api/activities/submit
-Description: Submit activities for a day.
-
-Example URL: http://localhost:3000/api/activities/submit
-
-GET /api/activities/submission
-Description: Get submission by date. (Likely expects query parameters for the date)
-
-Example URL: http://localhost:3000/api/activities/submission?date=YYYY-MM-DD
-
-GET /api/activities/submissions/all
-Description: Get all submissions.
-
-Example URL: http://localhost:3000/api/activities/submissions/all
-
-POST /api/activities/clear-day
-Description: Clear all activities for a specific day.
-
-Example URL: http://localhost:3000/api/activities/clear-day
-
-POST /api/activities/clear-all
-Description: Clear all activities and submissions for a user.
-
-Example URL: http://localhost:3000/api/activities/clear-all
-
-🚀 Getting Started - Node.js Server
-Navigate to the backend directory:
-cd Backend
-Install dependencies:
-npm i
-Create a .env file and configure the following variables:
-DATABASE_URL={Your database connection string}
-SHADOW_DATABASE_URL={Your shadow database connection string}
-Start the development server:
+Getting Started - React Client
+1.Navigate to the backend directory:
+ ```bash
+cd backend
+   ```
+2.Navigate to the backend directory:
+ ```bash
+npm install
+   ```
+3.Create a .env file and configure the following variables:
+ ```bash
+DATABASE_URL="file:./dev.db"
+ ```
+4.Run database migrations (if applicable):
+ ```bash
+npx prisma migrate dev
+ ```
+5.Generate Prisma client:
+ ```bash
+npx prisma generate
+ ```
+6.Start the development server:
+ ```bash
 npm run dev
-The server will be running on http://localhost:3000
+ ```
+7.The server will be running on::
+ ```bash
+(http://localhost:3000)
+ ```
