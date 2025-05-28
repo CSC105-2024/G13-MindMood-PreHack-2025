@@ -54,6 +54,7 @@ Prisma
 ### :electric_plug: API Endpoints
 ### User
 | Method      |	     Endpoint             |	     Description                           |
+|-------------|-----------------------------|----------------------------------------------|
 |POST         |	/user/createUser	        |Create an account for a user                  |
 |GET          |	/user/getUsername/:userId |Get username of a user based on given user id |
 |PATCH        |	/user/updateProfile	     |Update user profile information               |
