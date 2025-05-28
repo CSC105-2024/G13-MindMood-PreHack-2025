@@ -1,18 +1,9 @@
-# 🧠 MindMood
+:pushpin: MindMood
+ MindMood is a mood-based activity tracker that helps users monitor and reflect on their daily emotions and activities.
+Users can log activities by mood category (Calm, Neutral, Stressed), edit and delete entries, and visualize their mood trends over time.
+This project aims to promote mindfulness and improve personal well-being through mood awareness.
 
-Track your daily activities with moods, visualize progress, and stay mindful.
-
----
-
-## 🚀 Getting Started
-
-Clone the repository:
-
-```bash
-git clone https://github.com/your-username/mindmood.git
-cd mindmood
-
-🚀 Getting Started
+:rocket: Getting Started
 Clone the repository:
 
 bash
@@ -20,8 +11,8 @@ Copy
 Edit
 git clone https://github.com/your-username/MindMood.git
 cd MindMood
-💻 Frontend - React
-🛠️ Tech Stack
+:hammer: Frontend - React
+:wrench: Tech Stack
 React
 
 Axios
@@ -30,9 +21,7 @@ React Router DOM
 
 Tailwind CSS
 
-Zustand
-
-🚀 Getting Started - React Client
+:rocket: Getting Started - React Client
 Navigate to the frontend directory:
 
 bash
@@ -53,47 +42,33 @@ Edit
 npm run dev
 The client will be running on http://localhost:5173
 
-⚙️ Backend - Hono
-🧰 Tech Stack
+:wrench: Backend - Hono
+:hammer_and_wrench: Tech Stack
 Hono
 
-SQLite (via Prisma)
+SQLite
 
-JWT
+Prisma
 
-Bcrypt
+:electric_plug: API Endpoints
+User
+Method	Endpoint	Description
+POST	/user/createUser	Create an account for a user
+GET	/user/getUsername/:userId	Get username of a user based on given user id
+PATCH	/user/updateProfile	Update user profile information
 
-🔌 API Routes
-All backend routes are organized and mounted as follows:
+Activity
+Method	Endpoint	Description
+POST	/activity/createActivity	Create a new activity entry
+GET	/activity/getActivities/:userId	Get all activities logged by a user
+PATCH	/activity/updateActivity/:id	Update an existing activity entry
+DELETE	/activity/deleteActivity/:id	Delete an activity entry
 
-ts
-Copy
-Edit
-app.route('/api/auth', authRoutes);
-app.route('/api/activities', activityRoutes);
-app.route('/api/moods', moodRoutes);
-✨ Note: Each route module handles the respective logic for user authentication, activity CRUD, and mood stats.
+Mood
+Method	Endpoint	Description
+GET	/mood/getMoodStats/:userId	Get mood summary and statistics for a user
 
-🧭 Auth (/api/auth)
-POST /signup - Register a new user
-
-POST /login - Authenticate and receive token
-
-GET /me - Get current user info (requires auth)
-
-🗂️ Activities (/api/activities)
-POST /create - Create a new activity
-
-GET /all/:userId - Fetch all user activities
-
-PATCH /update/:id - Update an activity
-
-DELETE /delete/:id - Delete an activity
-
-📊 Mood Stats (/api/moods)
-GET /stats/:userId - Get mood stats summary for a user
-
-🚀 Getting Started - Node.js Server
+:rocket: Getting Started - Backend Server
 Navigate to the backend directory:
 
 bash
@@ -106,24 +81,23 @@ bash
 Copy
 Edit
 npm install
-Create a .env file and configure the environment:
+Create a .env file and configure the following variables:
 
-env
+ini
 Copy
 Edit
 DATABASE_URL="file:./dev.db"
-JWT_SECRET="your_jwt_secret"
-Apply Prisma migrations:
-
-bash
-Copy
-Edit
-npx prisma migrate dev --name init
-Start the backend server:
+Start the development server:
 
 bash
 Copy
 Edit
 npm run dev
-The server will be available at http://localhost:8000
+The server will be running on http://localhost:3000
+
+
+
+
+
+
 
